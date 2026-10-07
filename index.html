@@ -243,6 +243,30 @@ input,select,textarea{width:100%;margin:0 0 15px;background:var(--surface-3);col
 .record-kind{display:inline-block;margin-top:5px;padding:4px 6px;border-radius:7px;font-size:8px;border:1px solid var(--border-soft);color:var(--muted)}
 .record-kind.study{color:#8ed8f6;border-color:rgba(98,201,245,.20);background:rgba(98,201,245,.05)}
 .record-kind.practice{color:#f0c56e;border-color:rgba(240,181,78,.20);background:rgba(240,181,78,.05)}
+
+/* V6 — registro direto por abas */
+.register-shell{display:grid;gap:14px}
+.register-common{padding:13px;border:1px solid var(--border-soft);border-radius:16px;background:linear-gradient(145deg,var(--surface-2),var(--surface))}
+.register-common-title{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:11px}
+.register-common-title strong{font-size:11px}.register-common-title span{font-size:8px;color:var(--muted)}
+.register-mode-tabs{display:grid;grid-template-columns:1fr 1fr;gap:6px;padding:4px;border:1px solid var(--border-soft);border-radius:14px;background:var(--surface-3)}
+.register-mode-tab{min-height:42px;border:0;border-radius:10px;background:transparent;color:var(--muted);font-size:10px;font-weight:760}
+.register-mode-tab.active{color:var(--text);background:linear-gradient(180deg,var(--surface-2),var(--surface));box-shadow:inset 0 0 0 1px var(--border-soft)}
+.register-mode-tab.study.active{color:#8ed8f6;box-shadow:inset 0 0 0 1px rgba(98,201,245,.20)}
+.register-mode-tab.practice.active{color:#f0c56e;box-shadow:inset 0 0 0 1px rgba(240,181,78,.22)}
+.register-selector{padding:13px;border:1px solid var(--border-soft);border-radius:16px;background:rgba(0,0,0,.08)}
+.register-selector-head{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:9px}
+.register-selector-head strong{font-size:11px}.register-selector-head span{font-size:8px;color:var(--muted)}
+.register-tabs-scroll{display:flex;gap:6px;overflow-x:auto;padding:1px 1px 4px;scrollbar-width:none;-webkit-overflow-scrolling:touch}
+.register-tabs-scroll::-webkit-scrollbar{display:none}
+.register-select-tab{flex:0 0 auto;min-height:37px;padding:8px 10px;border:1px solid var(--border);border-radius:11px;background:var(--surface-2);color:var(--muted);font-size:9px;font-weight:700;white-space:nowrap}
+.register-select-tab.active{border-color:rgba(var(--gold-rgb),.48);background:var(--gold-soft);color:var(--text)}
+.register-path-summary{margin-top:8px;padding:9px 10px;border-radius:11px;background:var(--surface-3);border:1px solid var(--border-soft);font-size:9px;line-height:1.4;color:var(--text-2)}
+.register-path-summary b{color:var(--gold)}
+.register-status-wrap{margin-top:13px}
+.register-exercise-wrap{margin-top:13px}
+.register-save{margin-top:2px}
+.register-edit-lock{margin:-3px 0 10px;padding:8px 10px;border-radius:10px;border:1px solid var(--border-soft);background:rgba(255,255,255,.025);font-size:8px;color:var(--muted)}
 @media(max-width:420px){
   .lesson-actions{grid-template-columns:1fr}
   .lesson-detail-meta{grid-template-columns:repeat(3,minmax(0,1fr))}
@@ -282,7 +306,7 @@ input,select,textarea{width:100%;margin:0 0 15px;background:var(--surface-3);col
 </nav>
 
 <script>
-const APP_VERSION = 5;
+const APP_VERSION = 6;
 const STATUS_META = {
   not_watched:{label:'Não assistida',cls:'not-watched',rank:0},
   assisted:{label:'Assistida',cls:'assisted',rank:1},
@@ -447,6 +471,12 @@ let toastTimer=null;
 let goalDraft=[];
 let goalEditorContext=null;
 let progressView={level:'root'};
+let registerMode='study';
+let registerAreaId='technique';
+let registerSectionId='technique-10';
+let registerLessonId='lesson-independence';
+let registerRecordId=null;
+let registerPreselectExercise=null;
 
 const THEME_META={
   green:{name:'Verde escuro',desc:'Oliva, profundo e sóbrio',themeColor:'#151c13'},
@@ -573,7 +603,7 @@ function renderHome(){
   host.innerHTML=`
     <div class="card hero">
       <div class="hero-main">
-        <div><div class="eyebrow">Plano mestre</div><h2 class="section-title">Seu estudo, registrado em segundos.</h2><p class="section-copy">O Eixo 1 agora acompanha aulas, prática, BPM e metas.</p></div>
+        <div><div class="eyebrow">Plano mestre</div><h2 class="section-title">Seu estudo, registrado em segundos.</h2><p class="section-copy">Toque no Eixo 1 e registre a sessão diretamente.</p></div>
         <div style="text-align:right"><div class="hero-stat">${formatMin(total)}</div><div class="hero-label">esta semana</div></div>
       </div>
       <div class="hero-metrics">
@@ -605,17 +635,7 @@ function openAxis(axisId){
     showModal(AXES_UI.find(a=>a.id===axisId)?.title||'Eixo',`<div class="empty"><div class="empty-symbol">♪</div>Este eixo ainda não foi estruturado. Vamos construí-lo quando você chegar nele no curso.</div>`,'Plano mestre');
     return;
   }
-  const cards=E1_STRUCTURE.areas.map(area=>{
-    const rs=areaRecords(area.id);
-    const lessons=area.sections.flatMap(s=>s.lessons);
-    const counts=statusCountsForLessons(lessons);
-    return `<button class="tree-card" onclick="openArea('${area.id}')">
-      <span class="tree-icon">${escapeHTML(area.symbol)}</span>
-      <span class="tree-copy"><strong>${escapeHTML(area.name)}</strong><span>${escapeHTML(area.course)} · ${lessons.length} aula${lessons.length===1?'':'s'}</span></span>
-      <span class="tree-side"><b>${formatMin(sumDuration(rs))}</b><span>${counts.studied+counts.reviewed}/${lessons.length} estudadas+</span></span>
-    </button>`;
-  }).join('');
-  showModal('Eixo 1 — Domínio técnico',`<p class="section-copy" style="margin-top:-5px">Escolha a área do curso que você estudou ou praticou.</p><div class="tree-list">${cards}</div>`,'Fundamentos de execução');
+  openUnifiedRecordForm();
 }
 function openArea(areaId){
   const area=findArea(areaId);if(!area)return;
@@ -673,20 +693,6 @@ function setStudyStatus(key){
   selectedStudyStatus=key;
   document.querySelectorAll('.status-choice').forEach(el=>el.classList.toggle('active',el.dataset.status===key));
 }
-function openStudyForm(areaId,sectionId,lessonId,recordId=null){
-  const lesson=findLesson(areaId,sectionId,lessonId);if(!lesson)return;
-  const existing=recordId?records.find(r=>String(r.id)===String(recordId)):null;
-  selectedStudyStatus=existing?.statusAfter||nextStudyStatus(lessonId);
-  showModal(existing?'Editar sessão de estudo':lesson.name,`
-    <div class="form-label">Status após esta sessão <small>estado atual da aula</small></div>
-    <div class="status-choice-grid">${Object.entries(STATUS_META).map(([k,s])=>`<button type="button" data-status="${k}" class="status-choice ${selectedStudyStatus===k?'active':''}" onclick="setStudyStatus('${k}')">${s.label}</button>`).join('')}</div>
-    <div class="form-row"><div><div class="form-label">Data</div><input id="recordDate" type="date" value="${existing?.date||localISO()}"></div><div><div class="form-label">Hora</div><input id="recordTime" type="time" value="${existing?.startTime||nowTime()}"></div></div>
-    ${durationFields(existing?.duration)}
-    <div class="form-label">Observações <small>opcional</small></div><textarea id="recordNotes" placeholder="O que compreendeu, memorizou, anotou ou precisa revisar?">${escapeHTML(existing?.notes||'')}</textarea>
-    <button class="primary" onclick="saveStudyRecord('${areaId}','${sectionId}','${lessonId}',${recordId?inlineArg(recordId):'null'})">${existing?'Salvar alterações':'Salvar sessão de estudo'}</button>
-    ${existing?`<div style="height:9px"></div><button class="secondary danger" onclick="deleteRecord(${inlineArg(recordId)})">Excluir registro</button>`:''}
-  `,existing?'Edição':'Estudo da aula');
-}
 function durationFields(value){
   return `<div class="form-label">Duração <small>minutos</small></div><div class="duration-chips">${[10,20,30,45,60].map(n=>`<button type="button" class="chip ${Number(value)===n?'active':''}" onclick="setDuration(${n},this)">${n}</button>`).join('')}</div><input id="recordDuration" type="number" min="1" max="600" inputmode="numeric" placeholder="Duração em minutos" value="${value??''}">`;
 }
@@ -695,66 +701,116 @@ function readCommonForm(){
   return {date:document.getElementById('recordDate').value,startTime:document.getElementById('recordTime').value,duration:Number(document.getElementById('recordDuration').value)||0,notes:document.getElementById('recordNotes').value.trim()};
 }
 function validateCommon(data){if(!data.date||!data.startTime){showToast('Informe data e horário.','error');return false}if(data.duration<=0){showToast('Informe a duração.','error');return false}return true}
-function saveStudyRecord(areaId,sectionId,lessonId,recordId){
-  const d=readCommonForm();if(!validateCommon(d))return;
-  const payload={id:recordId||`${Date.now()}-${Math.random().toString(16).slice(2)}`,type:'study',axisId:'e1',areaId,sectionId,lessonId,statusAfter:selectedStudyStatus,...d,updatedAt:new Date().toISOString()};
-  upsertRecord(payload,recordId);
-}
 function upsertRecord(payload,recordId){
   if(recordId){const i=records.findIndex(r=>String(r.id)===String(recordId));if(i>=0)records[i]=payload}else records.push(payload);
   records.sort((a,b)=>recordSortKey(a).localeCompare(recordSortKey(b)));save();closeModal();showToast(recordId?'Registro atualizado.':'Registro salvo.');refreshCurrent();
 }
 function deleteRecord(id){if(!confirm('Excluir este registro?'))return;records=records.filter(r=>String(r.id)!==String(id));save();closeModal();showToast('Registro excluído.');refreshCurrent()}
 
-function togglePracticeExercise(el){
-  const id=el.dataset.exercise;
-  const i=selectedExercises.indexOf(id);
-  if(i>=0)selectedExercises.splice(i,1);else selectedExercises.push(id);
-  el.classList.toggle('active');
-  updatePracticeGoalHints();
+function registerEligibleAreas(mode){
+  if(mode==='practice')return E1_STRUCTURE.areas.filter(a=>a.sections.some(s=>s.lessons.some(l=>(l.exercises||[]).length)));
+  return E1_STRUCTURE.areas;
 }
-function setBpm(value,source='range'){
-  let n=Math.max(0,Math.min(200,Number(value)||0));
-  const range=document.getElementById('bpmRange'),number=document.getElementById('bpmNumber'),readout=document.getElementById('bpmReadout');
-  if(range&&source!=='range')range.value=n;
-  if(number&&source!=='number')number.value=n;
-  if(readout)readout.innerHTML=`${n}<small>BPM</small>`;
+function registerNormalizePath(resetLesson=true){
+  const areas=registerEligibleAreas(registerMode);
+  if(!areas.some(a=>a.id===registerAreaId))registerAreaId=areas[0]?.id||null;
+  const area=findArea(registerAreaId);
+  if(!area)return;
+  const sections=registerMode==='practice'?area.sections.filter(s=>s.lessons.some(l=>(l.exercises||[]).length)):area.sections;
+  if(!sections.some(s=>s.id===registerSectionId))registerSectionId=sections[0]?.id||null;
+  const section=findSection(registerAreaId,registerSectionId);
+  if(!section)return;
+  const lessons=registerMode==='practice'?section.lessons.filter(l=>(l.exercises||[]).length):section.lessons;
+  if(!lessons.some(l=>l.id===registerLessonId))registerLessonId=lessons[0]?.id||null;
+  if(resetLesson){
+    if(registerMode==='study')selectedStudyStatus=nextStudyStatus(registerLessonId);
+    else selectedExercises=registerPreselectExercise?[registerPreselectExercise]:[];
+  }
 }
-function updatePracticeGoalHints(){
-  const host=document.getElementById('practiceGoalHints');if(!host)return;
-  const goals=[...new Set(selectedExercises.flatMap(getGoals))].sort((a,b)=>a-b);
-  host.innerHTML=goals.length?goals.map(g=>`<span class="goal-chip">${g} BPM</span>`).join(''):'<span class="goal-chip">Sem metas definidas</span>';
+function registerTabs(items,activeId,onClick,labelFn){
+  return `<div class="register-tabs-scroll">${items.map(item=>`<button type="button" class="register-select-tab ${item.id===activeId?'active':''}" onclick="${onClick}('${item.id}')">${escapeHTML(labelFn(item))}</button>`).join('')}</div>`;
 }
-function openPracticeForm(areaId,sectionId,lessonId,recordId=null,preselect=null){
-  const lesson=findLesson(areaId,sectionId,lessonId);if(!lesson||!lesson.exercises.length)return;
-  const existing=recordId?records.find(r=>String(r.id)===String(recordId)):null;
-  selectedExercises=existing?.exerciseIds?[...existing.exerciseIds]:(preselect?[preselect]:[]);
-  const bpm=Number(existing?.bpm)||0;
-  showModal(existing?'Editar prática':lesson.name,`
-    <div class="form-label">Exercícios praticados <small>marque um ou mais</small></div>
-    <div class="unit-grid">${lesson.exercises.map(ex=>`<button type="button" class="unit-chip ${selectedExercises.includes(ex.id)?'active':''}" data-exercise="${ex.id}" onclick="togglePracticeExercise(this)">${escapeHTML(ex.name)}</button>`).join('')}</div>
-    <div class="bpm-panel">
-      <div class="bpm-title-row"><div class="bpm-title">BPM trabalhado</div><div class="small">0 a 200</div></div>
-      <div class="bpm-readout" id="bpmReadout">${bpm}<small>BPM</small></div>
-      <input class="bpm-range" id="bpmRange" type="range" min="0" max="200" step="1" value="${bpm}" oninput="setBpm(this.value,'range')">
-      <div class="bpm-scale"><span>0</span><span>100</span><span>200</span></div>
-      <div class="bpm-number-wrap"><div><div class="form-label">Valor exato</div><input id="bpmNumber" type="number" min="0" max="200" inputmode="numeric" value="${bpm}" oninput="setBpm(this.value,'number')"></div><div class="small" style="padding-bottom:13px">BPM</div></div>
-      <div class="practice-goal-hints" id="practiceGoalHints"></div>
+function renderRegisterSelector(){
+  const host=document.getElementById('registerSelector');if(!host)return;
+  registerNormalizePath(false);
+  const area=findArea(registerAreaId),section=findSection(registerAreaId,registerSectionId),lesson=findLesson(registerAreaId,registerSectionId,registerLessonId);
+  if(!area||!section||!lesson){host.innerHTML='<div class="empty">Nenhum conteúdo disponível.</div>';return}
+  const areas=registerEligibleAreas(registerMode);
+  const sections=registerMode==='practice'?area.sections.filter(s=>s.lessons.some(l=>(l.exercises||[]).length)):area.sections;
+  const lessons=registerMode==='practice'?section.lessons.filter(l=>(l.exercises||[]).length):section.lessons;
+  let specific='';
+  if(registerMode==='study'){
+    specific=`<div class="register-status-wrap"><div class="form-label">Status após esta sessão <small>estado da aula</small></div><div class="status-choice-grid">${Object.entries(STATUS_META).map(([k,st])=>`<button type="button" data-status="${k}" class="status-choice ${selectedStudyStatus===k?'active':''}" onclick="setStudyStatus('${k}')">${st.label}</button>`).join('')}</div></div>`;
+  }else{
+    const bpm=Number(document.getElementById('bpmNumber')?.value)||Number((registerRecordId?records.find(r=>String(r.id)===String(registerRecordId))?.bpm:0))||0;
+    if(!selectedExercises.length&&registerPreselectExercise&&lesson.exercises.some(e=>e.id===registerPreselectExercise))selectedExercises=[registerPreselectExercise];
+    specific=`<div class="register-exercise-wrap"><div class="form-label">Exercícios praticados <small>marque um ou mais</small></div><div class="unit-grid">${lesson.exercises.map(ex=>`<button type="button" class="unit-chip ${selectedExercises.includes(ex.id)?'active':''}" data-exercise="${ex.id}" onclick="togglePracticeExercise(this)">${escapeHTML(ex.name)}</button>`).join('')}</div><div class="bpm-panel"><div class="bpm-title-row"><div class="bpm-title">BPM trabalhado</div><div class="small">0 a 200</div></div><div class="bpm-readout" id="bpmReadout">${bpm}<small>BPM</small></div><input class="bpm-range" id="bpmRange" type="range" min="0" max="200" step="1" value="${bpm}" oninput="setBpm(this.value,'range')"><div class="bpm-scale"><span>0</span><span>100</span><span>200</span></div><div class="bpm-number-wrap"><div><div class="form-label">Valor exato</div><input id="bpmNumber" type="number" min="0" max="200" inputmode="numeric" value="${bpm}" oninput="setBpm(this.value,'number')"></div><div class="small" style="padding-bottom:13px">BPM</div></div><div class="practice-goal-hints" id="practiceGoalHints"></div></div></div>`;
+  }
+  host.innerHTML=`<div class="register-selector-head"><strong>Conteúdo</strong><span>selecione por abas</span></div>
+    <div class="form-label">Área</div>${registerTabs(areas,registerAreaId,'setRegisterArea',a=>a.name)}
+    ${sections.length>1?`<div class="form-label" style="margin-top:10px">Bloco</div>${registerTabs(sections,registerSectionId,'setRegisterSection',x=>x.name)}`:''}
+    <div class="form-label" style="margin-top:10px">Aula</div>${registerTabs(lessons,registerLessonId,'setRegisterLesson',x=>x.name)}
+    <div class="register-path-summary"><b>${escapeHTML(area.name)}</b> › ${escapeHTML(section.name)} › ${escapeHTML(lesson.name)}</div>
+    ${specific}`;
+  if(registerMode==='practice')updatePracticeGoalHints();
+}
+function setRegisterMode(mode){
+  if(registerRecordId)return;
+  if(!['study','practice'].includes(mode))return;
+  registerMode=mode;registerPreselectExercise=null;registerNormalizePath(true);
+  document.querySelectorAll('.register-mode-tab').forEach(el=>el.classList.toggle('active',el.dataset.mode===mode));
+  renderRegisterSelector();
+  const btn=document.getElementById('registerSaveBtn');if(btn)btn.textContent=mode==='study'?'Salvar sessão de estudo':'Salvar prática';
+}
+function setRegisterArea(areaId){registerAreaId=areaId;registerSectionId=null;registerLessonId=null;registerPreselectExercise=null;registerNormalizePath(true);renderRegisterSelector()}
+function setRegisterSection(sectionId){registerSectionId=sectionId;registerLessonId=null;registerPreselectExercise=null;registerNormalizePath(true);renderRegisterSelector()}
+function setRegisterLesson(lessonId){registerLessonId=lessonId;registerPreselectExercise=null;if(registerMode==='study')selectedStudyStatus=nextStudyStatus(lessonId);else selectedExercises=[];renderRegisterSelector()}
+
+function openUnifiedRecordForm(opts={}){
+  const existing=opts.recordId?records.find(r=>String(r.id)===String(opts.recordId)):null;
+  registerRecordId=existing?.id||null;
+  registerMode=existing?.type||opts.mode||'study';
+  registerAreaId=existing?.areaId||opts.areaId||registerAreaId||'technique';
+  registerSectionId=existing?.sectionId||opts.sectionId||registerSectionId||null;
+  registerLessonId=existing?.lessonId||opts.lessonId||registerLessonId||null;
+  registerPreselectExercise=opts.preselect||null;
+  selectedExercises=existing?.exerciseIds?[...existing.exerciseIds]:(opts.preselect?[opts.preselect]:[]);
+  selectedStudyStatus=existing?.statusAfter||selectedStudyStatus;
+  registerNormalizePath(!existing);
+  if(existing?.type==='study')selectedStudyStatus=existing.statusAfter||nextStudyStatus(registerLessonId);
+  const modeLock=existing?`<div class="register-edit-lock">Editando um registro existente. O tipo da sessão fica preservado; você pode alterar conteúdo, tempo, observações e demais dados.</div>`:'';
+  showModal(existing?'Editar registro':'Novo registro — Eixo 1',`
+    <div class="register-shell">
+      <div class="register-common"><div class="register-common-title"><strong>Registro</strong><span>dados da sessão</span></div><div class="form-row"><div><div class="form-label">Data</div><input id="recordDate" type="date" value="${existing?.date||localISO()}"></div><div><div class="form-label">Hora</div><input id="recordTime" type="time" value="${existing?.startTime||nowTime()}"></div></div>${durationFields(existing?.duration)}<div class="form-label">Observações <small>opcional</small></div><textarea id="recordNotes" placeholder="Notas da sessão...">${escapeHTML(existing?.notes||'')}</textarea></div>
+      ${modeLock}<div class="register-mode-tabs"><button type="button" data-mode="study" class="register-mode-tab study ${registerMode==='study'?'active':''}" ${existing&&registerMode!=='study'?'disabled':''} onclick="setRegisterMode('study')">Estudo da aula</button><button type="button" data-mode="practice" class="register-mode-tab practice ${registerMode==='practice'?'active':''}" ${existing&&registerMode!=='practice'?'disabled':''} onclick="setRegisterMode('practice')">Prática</button></div>
+      <div id="registerSelector" class="register-selector"></div>
+      <button class="primary register-save" id="registerSaveBtn" onclick="saveUnifiedRecord()">${existing?'Salvar alterações':registerMode==='study'?'Salvar sessão de estudo':'Salvar prática'}</button>
+      ${existing?`<button class="secondary danger" onclick="deleteRecord(${inlineArg(existing.id)})">Excluir registro</button>`:''}
     </div>
-    <div class="form-row"><div><div class="form-label">Data</div><input id="recordDate" type="date" value="${existing?.date||localISO()}"></div><div><div class="form-label">Hora</div><input id="recordTime" type="time" value="${existing?.startTime||nowTime()}"></div></div>
-    ${durationFields(existing?.duration)}
-    <div class="form-label">Observações <small>opcional</small></div><textarea id="recordNotes" placeholder="Execução, limpeza, dificuldades, sensação do tempo...">${escapeHTML(existing?.notes||'')}</textarea>
-    <button class="primary" onclick="savePracticeRecord('${areaId}','${sectionId}','${lessonId}',${recordId?inlineArg(recordId):'null'})">${existing?'Salvar alterações':'Salvar prática'}</button>
-    ${existing?`<div style="height:9px"></div><button class="secondary danger" onclick="deleteRecord(${inlineArg(recordId)})">Excluir registro</button>`:''}
-  `,existing?'Edição':'Prática deliberada');
-  updatePracticeGoalHints();
+  `,existing?'Edição':'Registro direto');
+  renderRegisterSelector();
 }
-function savePracticeRecord(areaId,sectionId,lessonId,recordId){
+function saveUnifiedRecord(){
   const d=readCommonForm();if(!validateCommon(d))return;
+  if(registerMode==='study'){
+    const payload={id:registerRecordId||`${Date.now()}-${Math.random().toString(16).slice(2)}`,type:'study',axisId:'e1',areaId:registerAreaId,sectionId:registerSectionId,lessonId:registerLessonId,statusAfter:selectedStudyStatus,...d,updatedAt:new Date().toISOString()};
+    upsertRecord(payload,registerRecordId);return;
+  }
   if(!selectedExercises.length){showToast('Marque pelo menos um exercício.','error');return}
   const bpm=Math.max(0,Math.min(200,Number(document.getElementById('bpmNumber')?.value)||0));
-  const payload={id:recordId||`${Date.now()}-${Math.random().toString(16).slice(2)}`,type:'practice',axisId:'e1',areaId,sectionId,lessonId,exerciseIds:[...selectedExercises],bpm,...d,updatedAt:new Date().toISOString()};
-  upsertRecord(payload,recordId);
+  const payload={id:registerRecordId||`${Date.now()}-${Math.random().toString(16).slice(2)}`,type:'practice',axisId:'e1',areaId:registerAreaId,sectionId:registerSectionId,lessonId:registerLessonId,exerciseIds:[...selectedExercises],bpm,...d,updatedAt:new Date().toISOString()};
+  upsertRecord(payload,registerRecordId);
+}
+function openStudyForm(areaId,sectionId,lessonId,recordId=null){openUnifiedRecordForm({mode:'study',areaId,sectionId,lessonId,recordId})}
+function openPracticeForm(areaId,sectionId,lessonId,recordId=null,preselect=null){openUnifiedRecordForm({mode:'practice',areaId,sectionId,lessonId,recordId,preselect})}
+function togglePracticeExercise(el){
+  const id=el.dataset.exercise;const i=selectedExercises.indexOf(id);if(i>=0)selectedExercises.splice(i,1);else selectedExercises.push(id);el.classList.toggle('active');updatePracticeGoalHints();
+}
+function setBpm(value,source='range'){
+  let n=Math.max(0,Math.min(200,Number(value)||0));const range=document.getElementById('bpmRange'),number=document.getElementById('bpmNumber'),readout=document.getElementById('bpmReadout');if(range&&source!=='range')range.value=n;if(number&&source!=='number')number.value=n;if(readout)readout.innerHTML=`${n}<small>BPM</small>`;
+}
+function updatePracticeGoalHints(){
+  const host=document.getElementById('practiceGoalHints');if(!host)return;const goals=[...new Set(selectedExercises.flatMap(getGoals))].sort((a,b)=>a-b);host.innerHTML=goals.length?goals.map(g=>`<span class="goal-chip">${g} BPM</span>`).join(''):'<span class="goal-chip">Sem metas definidas</span>';
 }
 
 function renderGoalEditor(){
@@ -861,7 +917,7 @@ function progressOpenSection(areaId,sectionId){progressView={level:'section',are
 function progressOpenLesson(areaId,sectionId,lessonId){progressView={level:'lesson',areaId,sectionId,lessonId};renderProgress()}
 
 function renderMore(){
-  document.getElementById('moreScreen').innerHTML=`<div class="more-grid"><div class="eyebrow" style="margin:2px 2px 3px">Versão 5 · estrutura do Eixo 1</div>
+  document.getElementById('moreScreen').innerHTML=`<div class="more-grid"><div class="eyebrow" style="margin:2px 2px 3px">Versão 6 · registro direto por abas</div>
     <button class="menu-btn" onclick="openGoalsManager()"><strong>Metas dos exercícios</strong><span>Editar, criar, excluir e reorganizar metas de BPM de qualquer exercício.</span></button>
     <button class="menu-btn" onclick="openAppearance()"><strong>Aparência</strong><span>Alternar entre verde escuro, preto, azul e amarelo.</span></button>
     <button class="menu-btn" onclick="exportJSON()"><strong>Exportar backup</strong><span>Baixar registros, metas personalizadas e aparência em JSON.</span></button>
@@ -876,7 +932,7 @@ function openGoalsManager(){
 
 function exportJSON(){
   const data={app:'baixo-plano-mestre',version:APP_VERSION,exportadoEm:new Date().toISOString(),records,goalOverrides,appearance:{theme:currentTheme}};
-  downloadBlob(new Blob([JSON.stringify(data,null,2)],{type:'application/json'}),'baixo-backup-v5.json');showToast('Backup exportado.');
+  downloadBlob(new Blob([JSON.stringify(data,null,2)],{type:'application/json'}),'baixo-backup-v6.json');showToast('Backup exportado.');
 }
 function csvEscape(v){const s=String(v??'');return `"${s.replace(/"/g,'""')}"`}
 function exportCSV(){
@@ -887,7 +943,7 @@ function exportCSV(){
     const ex=(r.exerciseIds||[]).map(id=>findExercise(id)?.exercise.name).filter(Boolean).join(' | ');
     csv+=[r.date,r.startTime,r.type,csvEscape(f.area.name),csvEscape(f.section.name),csvEscape(f.lesson.name),csvEscape(ex),r.type==='study'?(STATUS_META[r.statusAfter]?.label||''):'',r.bpm||'',r.duration,csvEscape(r.notes)].join(';')+'\n';
   });
-  downloadBlob(new Blob(['\ufeff'+csv],{type:'text/csv;charset=utf-8'}),'baixo-registros-v5.csv');showToast('Planilha exportada.');
+  downloadBlob(new Blob(['\ufeff'+csv],{type:'text/csv;charset=utf-8'}),'baixo-registros-v6.csv');showToast('Planilha exportada.');
 }
 function downloadBlob(blob,name){const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=name;a.click();setTimeout(()=>URL.revokeObjectURL(a.href),1000)}
 function handleImport(event){
@@ -920,7 +976,7 @@ function handleImport(event){
 migrateOldData();
 applyTheme(currentTheme);
 showHome();
-if('serviceWorker' in navigator){window.addEventListener('load',()=>navigator.serviceWorker.register('./sw.js?v=5').catch(()=>{}))}
+if('serviceWorker' in navigator){window.addEventListener('load',()=>navigator.serviceWorker.register('./sw.js?v=6').catch(()=>{}))}
 </script>
 
 </body>
