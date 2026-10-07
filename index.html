@@ -9,10 +9,10 @@
 </script>
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="apple-mobile-web-app-title" content="Baixo">
+<meta name="apple-mobile-web-app-title" content="Contrabaixo">
 <link rel="manifest" href="./manifest.json">
 <link rel="apple-touch-icon" href="./icon-192.png">
-<title>Baixo — Plano Mestre</title>
+<title>Contrabaixo</title>
 <style>
 :root{
   --bg:#0d0f12;
@@ -116,6 +116,16 @@ button{color:inherit}
 .hero-stat{font-size:28px;font-weight:800;letter-spacing:-.05em;color:var(--gold)}
 .hero-label{font-size:9px;color:var(--muted);text-transform:uppercase;letter-spacing:.11em;margin-top:2px}
 .hero-metrics{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:16px;position:relative;z-index:1}
+.home-axis-label{margin:1px 2px 9px}
+.home-stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:9px;margin-top:14px}
+.home-stat{min-width:0;padding:12px 8px 11px;border-radius:15px;border:1px solid var(--border-soft);background:linear-gradient(160deg,var(--surface-2),var(--surface));text-align:center;box-shadow:0 9px 24px rgba(0,0,0,.12)}
+.home-stat-icon{width:31px;height:31px;margin:0 auto 7px;border-radius:10px;display:grid;place-items:center;background:rgba(var(--gold-rgb),.08);border:1px solid rgba(var(--gold-rgb),.14);color:var(--gold)}
+.home-stat-icon svg{width:17px;height:17px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.home-stat:nth-child(1) .home-stat-icon{color:#f0c56e;background:rgba(240,181,78,.08);border-color:rgba(240,181,78,.15)}
+.home-stat:nth-child(2) .home-stat-icon{color:#78d0f3;background:rgba(98,201,245,.07);border-color:rgba(98,201,245,.14)}
+.home-stat:nth-child(3) .home-stat-icon{color:#87ddb0;background:rgba(104,211,155,.07);border-color:rgba(104,211,155,.14)}
+.home-stat b{display:block;font-size:16px;line-height:1.1;font-weight:800;color:var(--text);font-variant-numeric:tabular-nums;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.home-stat span{display:block;margin-top:4px;color:var(--muted);font-size:8px;text-transform:uppercase;letter-spacing:.08em}
 .metric{padding:10px 8px;border-radius:13px;background:rgba(255,255,255,.035);border:1px solid var(--border-soft);text-align:center}.metric:nth-child(1){background:rgba(240,181,78,.085);border-color:rgba(240,181,78,.16)}.metric:nth-child(2){background:rgba(98,201,245,.075);border-color:rgba(98,201,245,.15)}.metric:nth-child(3){background:rgba(195,142,244,.07);border-color:rgba(195,142,244,.14)}.metric:nth-child(1) b{color:#f0c56e}.metric:nth-child(2) b{color:#78d0f3}.metric:nth-child(3) b{color:#d4a9f7}
 .metric b{display:block;font-size:14px;font-variant-numeric:tabular-nums}.metric span{display:block;margin-top:3px;color:var(--muted);font-size:8px;text-transform:uppercase;letter-spacing:.06em}
 .axis-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
@@ -196,6 +206,22 @@ html,body{width:100%;max-width:100%;overflow-x:hidden}
   .register-mode-tabs{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}
   .register-mode-tab{padding-left:4px;padding-right:4px}
 }
+
+/* V8 — prática multiconteúdo e progresso sem duplicação de horas */
+.practice-selected{display:grid;gap:7px;margin:14px 0}
+.practice-selected-row{display:grid;grid-template-columns:minmax(0,1fr) auto 34px;gap:8px;align-items:center;padding:9px 10px;border:1px solid var(--border-soft);border-radius:12px;background:var(--surface-3);cursor:pointer}
+.practice-selected-row.active{border-color:rgba(98,201,245,.42);background:rgba(98,201,245,.055)}
+.practice-selected-copy{min-width:0}.practice-selected-copy strong{display:block;font-size:9px;color:var(--text-2);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.practice-selected-copy span{display:block;margin-top:3px;font-size:7px;color:var(--muted);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.practice-selected-bpm{font-size:9px;font-weight:780;color:#78d0f3;white-space:nowrap}
+.practice-selected-remove{width:30px;height:30px;border-radius:9px;border:1px solid rgba(211,107,107,.25);background:rgba(211,107,107,.055);color:#f09a9a;font-size:16px;line-height:1}
+.practice-empty-selection{margin:12px 0;padding:10px 11px;border:1px dashed var(--border);border-radius:12px;color:var(--muted);font-size:8px;line-height:1.45}
+.unit-chip.focused{box-shadow:0 0 0 2px rgba(98,201,245,.18) inset;border-color:rgba(98,201,245,.52)}
+.progress-study-summary{margin:0 0 12px;padding:12px 13px;border-radius:15px;border:1px solid var(--border);background:linear-gradient(155deg,var(--surface-2),var(--surface))}
+.progress-study-summary>div:first-child{display:grid;grid-template-columns:1fr auto;gap:3px 10px;align-items:end}.progress-study-summary span{font-size:9px;color:var(--muted)}.progress-study-summary strong{font-size:20px;color:#f0c56e}.progress-study-summary small{grid-column:1/-1;font-size:8px;color:var(--text-2)}
+.progress-study-bar,.progress-node-bar{height:6px;border-radius:99px;background:var(--surface-3);overflow:hidden;margin-top:9px}.progress-study-bar span,.progress-node-bar span{display:block;height:100%;border-radius:99px;background:linear-gradient(90deg,#f0b54e,#68d39b)}
+.progress-node-percent{font-size:18px;color:#f0c56e;font-weight:820;white-space:nowrap}
+.bpm-history{margin-top:10px;padding-top:9px;border-top:1px solid var(--border-soft)}.bpm-history-title{font-size:8px;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;margin-bottom:7px}.bpm-history-list{display:flex;gap:6px;overflow-x:auto;padding-bottom:2px;scrollbar-width:none}.bpm-history-list::-webkit-scrollbar{display:none}.bpm-history-chip{flex:none;padding:6px 8px;border-radius:9px;border:1px solid var(--border-soft);background:rgba(255,255,255,.02);font-size:8px;color:var(--muted)}.bpm-history-chip b{color:#78d0f3;font-size:9px}
+
 @keyframes fade{from{opacity:0}to{opacity:1}}@keyframes up{from{transform:translateY(20px);opacity:.5}to{transform:translateY(0);opacity:1}}
 @media(max-width:380px){.container{padding-left:12px;padding-right:12px}.axis-grid{gap:8px}.axis-card{min-height:164px;padding:13px}.axis-title{font-size:15px}.duration-chips{grid-template-columns:repeat(3,1fr)}}
 @media(min-width:620px){.axis-card{min-height:184px}.axis-title{font-size:20px;max-width:210px}.axis-subtitle{max-width:220px}.axis-grid{gap:12px}}
@@ -312,7 +338,7 @@ html,body{width:100%;max-width:100%;overflow-x:hidden}
     <div class="brand-row">
       <div class="brand-mark" aria-hidden="true">𝄢</div>
       <div>
-        <h1 id="screenTitle">Baixo</h1>
+        <h1 id="screenTitle">Contrabaixo</h1>
         <div id="screenSubtitle"></div>
       </div>
     </div>
@@ -335,7 +361,7 @@ html,body{width:100%;max-width:100%;overflow-x:hidden}
 </nav>
 
 <script>
-const APP_VERSION = 7;
+const APP_VERSION = 9;
 const STATUS_META = {
   not_watched:{label:'Não assistida',cls:'not-watched',rank:0},
   assisted:{label:'Assistida',cls:'assisted',rank:1},
@@ -495,6 +521,8 @@ let calendarMonth = new Date().getMonth();
 let calendarYear = new Date().getFullYear();
 let currentScreen='home';
 let selectedExercises=[];
+let practiceSelections={};
+let activePracticeExerciseId=null;
 let selectedStudyStatus='assisted';
 let toastTimer=null;
 let goalDraft=[];
@@ -563,16 +591,68 @@ function getGoals(exerciseId){
   const custom=goalOverrides[exerciseId];
   return Array.isArray(custom)?custom:[...(found.exercise.goals||[])];
 }
+function practiceItems(record){
+  if(!record||record.type!=='practice')return[];
+  if(Array.isArray(record.items)){
+    return record.items.map(item=>{
+      const found=findExercise(item.exerciseId);
+      return {
+        exerciseId:item.exerciseId,
+        bpm:Number(item.bpm)||0,
+        areaId:item.areaId||found?.area.id||null,
+        sectionId:item.sectionId||found?.section.id||null,
+        lessonId:item.lessonId||found?.lesson.id||null
+      };
+    }).filter(item=>item.exerciseId);
+  }
+  return (record.exerciseIds||[]).map(exerciseId=>{
+    const found=findExercise(exerciseId);
+    return {
+      exerciseId,
+      bpm:Number(record.bpm)||0,
+      areaId:record.areaId||found?.area.id||null,
+      sectionId:record.sectionId||found?.section.id||null,
+      lessonId:record.lessonId||found?.lesson.id||null
+    };
+  });
+}
+function exerciseBpmHistory(exerciseId){
+  const history=[];
+  records.forEach(r=>{
+    if(r.type!=='practice')return;
+    practiceItems(r).forEach(item=>{
+      if(item.exerciseId===exerciseId&&Number(item.bpm)>0){
+        history.push({date:r.date||'',startTime:r.startTime||'',bpm:Number(item.bpm),recordId:r.id});
+      }
+    });
+  });
+  return history.sort((a,b)=>`${a.date} ${a.startTime}`.localeCompare(`${b.date} ${b.startTime}`));
+}
 function bestBpm(exerciseId){
-  const vals=records.filter(r=>r.type==='practice'&&(r.exerciseIds||[]).includes(exerciseId)&&Number(r.bpm)>0).map(r=>Number(r.bpm));
+  const vals=exerciseBpmHistory(exerciseId).map(x=>x.bpm);
   return vals.length?Math.max(...vals):null;
 }
-function exerciseSessionTime(exerciseId){
-  return sumDuration(records.filter(r=>r.type==='practice'&&(r.exerciseIds||[]).includes(exerciseId)));
+function latestBpm(exerciseId){
+  const h=exerciseBpmHistory(exerciseId);
+  return h.length?h[h.length-1].bpm:null;
 }
-function lessonRecords(lessonId,type=null){return records.filter(r=>r.lessonId===lessonId&&(!type||r.type===type))}
-function sectionRecords(sectionId){return records.filter(r=>r.sectionId===sectionId)}
-function areaRecords(areaId){return records.filter(r=>r.areaId===areaId)}
+function exerciseSessionTime(exerciseId){
+  return sumDuration(records.filter(r=>r.type==='practice'&&practiceItems(r).some(item=>item.exerciseId===exerciseId)));
+}
+function lessonRecords(lessonId,type=null){
+  return records.filter(r=>{
+    if(type&&r.type!==type)return false;
+    if(r.type==='study')return r.lessonId===lessonId;
+    if(r.type==='practice')return practiceItems(r).some(item=>item.lessonId===lessonId);
+    return false;
+  });
+}
+function sectionRecords(sectionId){
+  return records.filter(r=>r.type==='study'?r.sectionId===sectionId:r.type==='practice'&&practiceItems(r).some(item=>item.sectionId===sectionId));
+}
+function areaRecords(areaId){
+  return records.filter(r=>r.type==='study'?r.areaId===areaId:r.type==='practice'&&practiceItems(r).some(item=>item.areaId===areaId));
+}
 function lessonStatusKey(lessonId){
   const list=lessonRecords(lessonId,'study').filter(r=>STATUS_META[r.statusAfter]).sort((a,b)=>recordSortKey(a).localeCompare(recordSortKey(b)));
   return list.length?list[list.length-1].statusAfter:'not_watched';
@@ -620,7 +700,7 @@ function migrateOldData(){
 function setHeader(title,subtitle=''){document.getElementById('screenTitle').textContent=title;document.getElementById('screenSubtitle').textContent=subtitle}
 function setNav(screen){['Home','History','Progress','More'].forEach(x=>document.getElementById(`nav${x}`)?.classList.remove('active'));const map={home:'Home',history:'History',progress:'Progress',more:'More'};document.getElementById(`nav${map[screen]}`)?.classList.add('active')}
 function showOnly(id){['homeScreen','historyScreen','progressScreen','moreScreen'].forEach(x=>document.getElementById(x).classList.toggle('hidden',x!==id))}
-function showHome(){currentScreen='home';showOnly('homeScreen');setNav('home');setHeader('Baixo',new Intl.DateTimeFormat('pt-BR',{weekday:'long',day:'numeric',month:'long'}).format(new Date()));renderHome()}
+function showHome(){currentScreen='home';showOnly('homeScreen');setNav('home');setHeader('Contrabaixo',new Intl.DateTimeFormat('pt-BR',{weekday:'long',day:'numeric',month:'long'}).format(new Date()));renderHome()}
 function showHistory(){currentScreen='history';showOnly('historyScreen');setNav('history');setHeader('Histórico','Estudo e prática ao longo do tempo');renderHistory()}
 function showProgress(){currentScreen='progress';showOnly('progressScreen');setNav('progress');setHeader('Progresso','Navegue pela estrutura do Eixo 1');renderProgress()}
 function showMore(){currentScreen='more';showOnly('moreScreen');setNav('more');setHeader('Mais','Metas, aparência e dados');renderMore()}
@@ -628,29 +708,34 @@ function refreshCurrent(){if(currentScreen==='home')renderHome();if(currentScree
 
 function renderHome(){
   const host=document.getElementById('homeScreen');
-  const wr=weekRecords(),total=sumDuration(wr),sessions=wr.length,days=uniqueDays(wr);
+  const allTotal=sumDuration(records);
+  const allSessions=records.length;
+  const allDays=uniqueDays(records);
   host.innerHTML=`
-    <div class="card hero">
-      <div class="hero-main">
-        <div><div class="eyebrow">Plano mestre</div><h2 class="section-title">Seu estudo, registrado em segundos.</h2><p class="section-copy">Toque no Eixo 1 e registre a sessão diretamente.</p></div>
-        <div style="text-align:right"><div class="hero-stat">${formatMin(total)}</div><div class="hero-label">esta semana</div></div>
-      </div>
-      <div class="hero-metrics">
-        <div class="metric"><b>${sessions}</b><span>registros</span></div>
-        <div class="metric"><b>${days}</b><span>dias</span></div>
-        <div class="metric"><b>${records.length}</b><span>total</span></div>
-      </div>
-    </div>
-    <div class="eyebrow" style="margin:4px 2px 9px">Registrar treino</div>
+    <div class="eyebrow home-axis-label">Registrar treino</div>
     <div class="axis-grid">${AXES_UI.map(axis=>{
-      const mins=axis.id==='e1'?sumDuration(wr.filter(r=>r.axisId==='e1'||r.areaId)):0;
+      const footer=axis.id==='e1'?'registrar sessão':'a estruturar';
       return `<button class="axis-card" data-axis="${axis.id}" data-symbol="${escapeHTML(axis.symbol)}" onclick="openAxis('${axis.id}')">
         <div class="axis-symbol">${escapeHTML(axis.symbol)}</div>
         <div class="axis-number">Eixo ${axis.number}</div>
         <div class="axis-title">${escapeHTML(axis.title)}</div>
         <div class="axis-subtitle">${escapeHTML(axis.subtitle)}</div>
-        <div class="axis-footer"><span class="axis-time">${axis.id==='e1'?`${formatMin(mins)} na semana`:'a estruturar'}</span><span class="axis-arrow">›</span></div>
-      </button>`}).join('')}</div>`;
+        <div class="axis-footer"><span class="axis-time">${footer}</span><span class="axis-arrow">›</span></div>
+      </button>`}).join('')}</div>
+    <div class="home-stats" aria-label="Resumo geral">
+      <div class="home-stat">
+        <div class="home-stat-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M9 6h11M9 12h11M9 18h11"/><path d="M4 6h.01M4 12h.01M4 18h.01"/></svg></div>
+        <b>${allSessions}</b><span>registros</span>
+      </div>
+      <div class="home-stat">
+        <div class="home-stat-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M7 3v4M17 3v4M3 10h18"/></svg></div>
+        <b>${allDays}</b><span>dias</span>
+      </div>
+      <div class="home-stat">
+        <div class="home-stat-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg></div>
+        <b>${formatMin(allTotal)}</b><span>tempo total</span>
+      </div>
+    </div>`;
 }
 
 function showModal(title,body,kicker='Registro'){
@@ -753,11 +838,19 @@ function registerNormalizePath(resetLesson=true){
   if(!lessons.some(l=>l.id===registerLessonId))registerLessonId=lessons[0]?.id||null;
   if(resetLesson){
     if(registerMode==='study')selectedStudyStatus=nextStudyStatus(registerLessonId);
-    else selectedExercises=registerPreselectExercise?[registerPreselectExercise]:[];
   }
 }
 function registerTabs(items,activeId,onClick,labelFn){
   return `<div class="register-tabs-scroll">${items.map(item=>`<button type="button" class="register-select-tab ${item.id===activeId?'active':''}" onclick="${onClick}('${item.id}')">${escapeHTML(labelFn(item))}</button>`).join('')}</div>`;
+}
+function selectedPracticeIds(){return Object.keys(practiceSelections)}
+function practiceSelectionHas(id){return Object.prototype.hasOwnProperty.call(practiceSelections,id)}
+function practiceSelectionRows(){
+  return selectedPracticeIds().map(id=>{
+    const found=findExercise(id);if(!found)return'';
+    const bpm=Number(practiceSelections[id])||0;
+    return `<div class="practice-selected-row ${activePracticeExerciseId===id?'active':''}" onclick="focusPracticeExercise('${id}')"><div class="practice-selected-copy"><strong>${escapeHTML(found.exercise.name)}</strong><span>${escapeHTML(found.area.name)} › ${escapeHTML(found.lesson.name)}</span></div><div class="practice-selected-bpm">${bpm?`${bpm} BPM`:'definir BPM'}</div><button type="button" class="practice-selected-remove" onclick="event.stopPropagation();removePracticeExercise('${id}')" aria-label="Remover">×</button></div>`;
+  }).join('');
 }
 function renderRegisterSelector(){
   const host=document.getElementById('registerSelector');if(!host)return;
@@ -771,9 +864,18 @@ function renderRegisterSelector(){
   if(registerMode==='study'){
     specific=`<div class="register-status-wrap"><div class="form-label">Status após esta sessão <small>estado da aula</small></div><div class="status-choice-grid">${Object.entries(STATUS_META).map(([k,st])=>`<button type="button" data-status="${k}" class="status-choice ${selectedStudyStatus===k?'active':''}" onclick="setStudyStatus('${k}')">${st.label}</button>`).join('')}</div></div>`;
   }else{
-    const bpm=Number(document.getElementById('bpmNumber')?.value)||Number((registerRecordId?records.find(r=>String(r.id)===String(registerRecordId))?.bpm:0))||0;
-    if(!selectedExercises.length&&registerPreselectExercise&&lesson.exercises.some(e=>e.id===registerPreselectExercise))selectedExercises=[registerPreselectExercise];
-    specific=`<div class="register-exercise-wrap"><div class="form-label">Exercícios praticados <small>marque um ou mais</small></div><div class="unit-grid">${lesson.exercises.map(ex=>`<button type="button" class="unit-chip ${selectedExercises.includes(ex.id)?'active':''}" data-exercise="${ex.id}" onclick="togglePracticeExercise(this)">${escapeHTML(ex.name)}</button>`).join('')}</div><div class="bpm-panel"><div class="bpm-title-row"><div class="bpm-title">BPM trabalhado</div><div class="small">0 a 200</div></div><div class="bpm-readout" id="bpmReadout">${bpm}<small>BPM</small></div><input class="bpm-range" id="bpmRange" type="range" min="0" max="200" step="1" value="${bpm}" oninput="setBpm(this.value,'range')"><div class="bpm-scale"><span>0</span><span>100</span><span>200</span></div><div class="bpm-number-wrap"><div><div class="form-label">Valor exato</div><input id="bpmNumber" type="number" min="0" max="200" inputmode="numeric" value="${bpm}" oninput="setBpm(this.value,'number')"></div><div class="small" style="padding-bottom:13px">BPM</div></div><div class="practice-goal-hints" id="practiceGoalHints"></div></div></div>`;
+    if(registerPreselectExercise&&!practiceSelectionHas(registerPreselectExercise)){
+      practiceSelections[registerPreselectExercise]=latestBpm(registerPreselectExercise)||0;
+      activePracticeExerciseId=registerPreselectExercise;
+      registerPreselectExercise=null;
+    }
+    const ids=selectedPracticeIds();
+    if(!activePracticeExerciseId||!practiceSelectionHas(activePracticeExerciseId))activePracticeExerciseId=ids.find(id=>lesson.exercises.some(e=>e.id===id))||ids[0]||null;
+    const activeFound=activePracticeExerciseId?findExercise(activePracticeExerciseId):null;
+    const bpm=activePracticeExerciseId?(Number(practiceSelections[activePracticeExerciseId])||0):0;
+    const selectionSummary=ids.length?`<div class="practice-selected"><div class="form-label">Nesta sessão <small>${ids.length} exercício${ids.length===1?'':'s'} selecionado${ids.length===1?'':'s'}</small></div>${practiceSelectionRows()}</div>`:`<div class="practice-empty-selection">Selecione os exercícios praticados. Você pode mudar de área e aula; as escolhas ficam na mesma sessão.</div>`;
+    const bpmPanel=activeFound?`<div class="bpm-panel"><div class="bpm-title-row"><div><div class="bpm-title">BPM — ${escapeHTML(activeFound.exercise.name)}</div><div class="small">${escapeHTML(activeFound.area.name)} › ${escapeHTML(activeFound.lesson.name)}</div></div><div class="small">0 a 200</div></div><div class="bpm-readout" id="bpmReadout">${bpm}<small>BPM</small></div><input class="bpm-range" id="bpmRange" type="range" min="0" max="200" step="1" value="${bpm}" oninput="setBpm(this.value,'range')"><div class="bpm-scale"><span>0</span><span>100</span><span>200</span></div><div class="bpm-number-wrap"><div><div class="form-label">Valor exato</div><input id="bpmNumber" type="number" min="0" max="200" inputmode="numeric" value="${bpm}" oninput="setBpm(this.value,'number')"></div><div class="small" style="padding-bottom:13px">BPM</div></div><div class="practice-goal-hints" id="practiceGoalHints"></div></div>`:'';
+    specific=`<div class="register-exercise-wrap"><div class="form-label">Exercícios praticados <small>toque para adicionar / focar</small></div><div class="unit-grid">${lesson.exercises.map(ex=>`<button type="button" class="unit-chip ${practiceSelectionHas(ex.id)?'active':''} ${activePracticeExerciseId===ex.id?'focused':''}" data-exercise="${ex.id}" onclick="choosePracticeExercise('${ex.id}')">${escapeHTML(ex.name)}${practiceSelectionHas(ex.id)&&Number(practiceSelections[ex.id])?` · ${Number(practiceSelections[ex.id])}`:''}</button>`).join('')}</div>${selectionSummary}${bpmPanel}</div>`;
   }
   host.innerHTML=`<div class="register-selector-head"><strong>Conteúdo</strong><span>selecione por abas</span></div>
     <div class="form-label">Área</div>${registerTabs(areas,registerAreaId,'setRegisterArea',a=>a.name)}
@@ -793,17 +895,36 @@ function setRegisterMode(mode){
 }
 function setRegisterArea(areaId){registerAreaId=areaId;registerSectionId=null;registerLessonId=null;registerPreselectExercise=null;registerNormalizePath(true);renderRegisterSelector()}
 function setRegisterSection(sectionId){registerSectionId=sectionId;registerLessonId=null;registerPreselectExercise=null;registerNormalizePath(true);renderRegisterSelector()}
-function setRegisterLesson(lessonId){registerLessonId=lessonId;registerPreselectExercise=null;if(registerMode==='study')selectedStudyStatus=nextStudyStatus(lessonId);else selectedExercises=[];renderRegisterSelector()}
+function setRegisterLesson(lessonId){registerLessonId=lessonId;registerPreselectExercise=null;if(registerMode==='study')selectedStudyStatus=nextStudyStatus(lessonId);renderRegisterSelector()}
+function choosePracticeExercise(id){
+  if(!findExercise(id))return;
+  if(!practiceSelectionHas(id))practiceSelections[id]=latestBpm(id)||0;
+  activePracticeExerciseId=id;
+  renderRegisterSelector();
+}
+function focusPracticeExercise(id){if(!practiceSelectionHas(id))return;activePracticeExerciseId=id;const f=findExercise(id);if(f){registerAreaId=f.area.id;registerSectionId=f.section.id;registerLessonId=f.lesson.id}renderRegisterSelector()}
+function removePracticeExercise(id){if(!practiceSelectionHas(id))return;delete practiceSelections[id];if(activePracticeExerciseId===id)activePracticeExerciseId=selectedPracticeIds()[0]||null;renderRegisterSelector()}
 
 function openUnifiedRecordForm(opts={}){
   const existing=opts.recordId?records.find(r=>String(r.id)===String(opts.recordId)):null;
   registerRecordId=existing?.id||null;
   registerMode=existing?.type||opts.mode||'study';
-  registerAreaId=existing?.areaId||opts.areaId||registerAreaId||'technique';
-  registerSectionId=existing?.sectionId||opts.sectionId||registerSectionId||null;
-  registerLessonId=existing?.lessonId||opts.lessonId||registerLessonId||null;
+  practiceSelections={};activePracticeExerciseId=null;
+  if(existing?.type==='practice'){
+    const items=practiceItems(existing);
+    items.forEach(item=>practiceSelections[item.exerciseId]=Number(item.bpm)||0);
+    activePracticeExerciseId=items[0]?.exerciseId||null;
+    const first=items[0];
+    registerAreaId=first?.areaId||opts.areaId||registerAreaId||'technique';
+    registerSectionId=first?.sectionId||opts.sectionId||registerSectionId||null;
+    registerLessonId=first?.lessonId||opts.lessonId||registerLessonId||null;
+  }else{
+    registerAreaId=existing?.areaId||opts.areaId||registerAreaId||'technique';
+    registerSectionId=existing?.sectionId||opts.sectionId||registerSectionId||null;
+    registerLessonId=existing?.lessonId||opts.lessonId||registerLessonId||null;
+  }
   registerPreselectExercise=opts.preselect||null;
-  selectedExercises=existing?.exerciseIds?[...existing.exerciseIds]:(opts.preselect?[opts.preselect]:[]);
+  if(!existing&&opts.preselect){practiceSelections[opts.preselect]=latestBpm(opts.preselect)||0;activePracticeExerciseId=opts.preselect}
   selectedStudyStatus=existing?.statusAfter||selectedStudyStatus;
   registerNormalizePath(!existing);
   if(existing?.type==='study')selectedStudyStatus=existing.statusAfter||nextStudyStatus(registerLessonId);
@@ -825,22 +946,34 @@ function saveUnifiedRecord(){
     const payload={id:registerRecordId||`${Date.now()}-${Math.random().toString(16).slice(2)}`,type:'study',axisId:'e1',areaId:registerAreaId,sectionId:registerSectionId,lessonId:registerLessonId,statusAfter:selectedStudyStatus,...d,updatedAt:new Date().toISOString()};
     upsertRecord(payload,registerRecordId);return;
   }
-  if(!selectedExercises.length){showToast('Marque pelo menos um exercício.','error');return}
-  const bpm=Math.max(0,Math.min(200,Number(document.getElementById('bpmNumber')?.value)||0));
-  const payload={id:registerRecordId||`${Date.now()}-${Math.random().toString(16).slice(2)}`,type:'practice',axisId:'e1',areaId:registerAreaId,sectionId:registerSectionId,lessonId:registerLessonId,exerciseIds:[...selectedExercises],bpm,...d,updatedAt:new Date().toISOString()};
+  const ids=selectedPracticeIds();
+  if(!ids.length){showToast('Marque pelo menos um exercício.','error');return}
+  const missing=ids.filter(id=>(Number(practiceSelections[id])||0)<=0);
+  if(missing.length){showToast('Defina o BPM de todos os exercícios selecionados.','error');return}
+  const items=ids.map(exerciseId=>{
+    const found=findExercise(exerciseId);
+    return {exerciseId,bpm:Math.max(0,Math.min(200,Number(practiceSelections[exerciseId])||0)),areaId:found?.area.id||null,sectionId:found?.section.id||null,lessonId:found?.lesson.id||null};
+  });
+  const payload={id:registerRecordId||`${Date.now()}-${Math.random().toString(16).slice(2)}`,type:'practice',axisId:'e1',items,...d,updatedAt:new Date().toISOString()};
   upsertRecord(payload,registerRecordId);
+}
+function togglePracticeExercise(el){choosePracticeExercise(el.dataset.exercise)}
+function setBpm(value,source){
+  let n=Math.max(0,Math.min(200,Number(value)||0));
+  if(activePracticeExerciseId)practiceSelections[activePracticeExerciseId]=n;
+  const range=document.getElementById('bpmRange'),number=document.getElementById('bpmNumber'),readout=document.getElementById('bpmReadout');
+  if(range&&source!=='range')range.value=n;if(number&&source!=='number')number.value=n;if(readout)readout.innerHTML=`${n}<small>BPM</small>`;
+  const row=[...document.querySelectorAll('.practice-selected-row')].find(x=>x.getAttribute('onclick')?.includes(activePracticeExerciseId));if(row){const b=row.querySelector('.practice-selected-bpm');if(b)b.textContent=n?`${n} BPM`:'definir BPM'}
+  const chip=document.querySelector(`.unit-chip[data-exercise="${activePracticeExerciseId}"]`);if(chip){const f=findExercise(activePracticeExerciseId);chip.textContent=`${f?.exercise.name||'Exercício'}${n?` · ${n}`:''}`}
+}
+function updatePracticeGoalHints(){
+  const host=document.getElementById('practiceGoalHints');if(!host)return;
+  if(!activePracticeExerciseId){host.innerHTML='';return}
+  const goals=getGoals(activePracticeExerciseId);
+  host.innerHTML=goals.length?goals.map(g=>`<span class="goal-chip">${g} BPM</span>`).join(''):'<span class="goal-chip">Sem metas definidas</span>';
 }
 function openStudyForm(areaId,sectionId,lessonId,recordId=null){openUnifiedRecordForm({mode:'study',areaId,sectionId,lessonId,recordId})}
 function openPracticeForm(areaId,sectionId,lessonId,recordId=null,preselect=null){openUnifiedRecordForm({mode:'practice',areaId,sectionId,lessonId,recordId,preselect})}
-function togglePracticeExercise(el){
-  const id=el.dataset.exercise;const i=selectedExercises.indexOf(id);if(i>=0)selectedExercises.splice(i,1);else selectedExercises.push(id);el.classList.toggle('active');updatePracticeGoalHints();
-}
-function setBpm(value,source='range'){
-  let n=Math.max(0,Math.min(200,Number(value)||0));const range=document.getElementById('bpmRange'),number=document.getElementById('bpmNumber'),readout=document.getElementById('bpmReadout');if(range&&source!=='range')range.value=n;if(number&&source!=='number')number.value=n;if(readout)readout.innerHTML=`${n}<small>BPM</small>`;
-}
-function updatePracticeGoalHints(){
-  const host=document.getElementById('practiceGoalHints');if(!host)return;const goals=[...new Set(selectedExercises.flatMap(getGoals))].sort((a,b)=>a-b);host.innerHTML=goals.length?goals.map(g=>`<span class="goal-chip">${g} BPM</span>`).join(''):'<span class="goal-chip">Sem metas definidas</span>';
-}
 
 function renderGoalEditor(){
   const c=goalEditorContext;if(!c)return;
@@ -882,13 +1015,14 @@ function renderHistory(){
 }
 function recordCardHTML(r){
   if(r.type==='legacy')return `<div class="record-card"><div class="record-top"><div><div class="record-axis">Registro anterior</div><div class="record-title">${escapeHTML(r.legacyTitle||'Registro')}</div><span class="record-kind">legado</span></div><div class="record-time">${escapeHTML(r.startTime||'')} · ${formatMin(r.duration)}</div></div>${r.notes?`<div class="record-note">${escapeHTML(r.notes)}</div>`:''}</div>`;
-  const found=findLessonAny(r.lessonId);if(!found)return'';
-  const {area,section,lesson}=found;
   if(r.type==='study'){
+    const found=findLessonAny(r.lessonId);if(!found)return'';
+    const {area,section,lesson}=found;
     return `<div class="record-card" data-axis="e1" onclick="openStudyForm('${area.id}','${section.id}','${lesson.id}',${inlineArg(r.id)})"><div class="record-top"><div><div class="record-axis">${escapeHTML(area.name)} · ${escapeHTML(section.name)}</div><div class="record-title">${escapeHTML(lesson.name)}</div><span class="record-kind study">estudo · ${STATUS_META[r.statusAfter]?.label||'—'}</span></div><div class="record-time">${escapeHTML(r.startTime)} · ${formatMin(r.duration)}</div></div>${r.notes?`<div class="record-note">${escapeHTML(r.notes)}</div>`:''}</div>`;
   }
-  const names=(r.exerciseIds||[]).map(id=>findExercise(id)?.exercise.name).filter(Boolean);
-  return `<div class="record-card" data-axis="e1" onclick="openPracticeForm('${area.id}','${section.id}','${lesson.id}',${inlineArg(r.id)})"><div class="record-top"><div><div class="record-axis">${escapeHTML(area.name)} · ${escapeHTML(section.name)}</div><div class="record-title">${escapeHTML(lesson.name)}</div><span class="record-kind practice">prática${r.bpm?` · ${r.bpm} BPM`:''}</span></div><div class="record-time">${escapeHTML(r.startTime)} · ${formatMin(r.duration)}</div></div><div class="record-meta">${names.map(n=>`<span class="mini-tag">${escapeHTML(n)}</span>`).join('')}</div>${r.notes?`<div class="record-note">${escapeHTML(r.notes)}</div>`:''}</div>`;
+  const items=practiceItems(r);
+  const lessonNames=[...new Set(items.map(i=>findExercise(i.exerciseId)?.lesson.name).filter(Boolean))];
+  return `<div class="record-card" data-axis="e1" onclick="openUnifiedRecordForm({recordId:${inlineArg(r.id)}})"><div class="record-top"><div><div class="record-axis">Eixo 1 · prática</div><div class="record-title">${items.length} exercício${items.length===1?'':'s'} · ${lessonNames.length} aula${lessonNames.length===1?'':'s'}</div><span class="record-kind practice">prática multiconteúdo</span></div><div class="record-time">${escapeHTML(r.startTime)} · ${formatMin(r.duration)}</div></div><div class="record-meta">${items.map(item=>{const f=findExercise(item.exerciseId);return `<span class="mini-tag">${escapeHTML(f?.exercise.name||item.exerciseId)} · ${item.bpm||0} BPM</span>`}).join('')}</div>${r.notes?`<div class="record-note">${escapeHTML(r.notes)}</div>`:''}</div>`;
 }
 function changeMonth(delta){calendarMonth+=delta;if(calendarMonth<0){calendarMonth=11;calendarYear--}if(calendarMonth>11){calendarMonth=0;calendarYear++}const d=Math.min(Number(selectedDate?.split('-')[2]||1),new Date(calendarYear,calendarMonth+1,0).getDate());selectedDate=`${calendarYear}-${String(calendarMonth+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;renderHistory()}
 function selectHistoryDate(iso){selectedDate=iso;renderHistory()}
@@ -897,56 +1031,61 @@ function progressTotals(list){
   const study=sumDuration(list.filter(r=>r.type==='study')),practice=sumDuration(list.filter(r=>r.type==='practice'));
   return {study,practice,total:study+practice};
 }
+function studiedSummary(lessons){
+  const list=lessons||[];
+  const studied=list.filter(l=>STATUS_META[lessonStatusKey(l.id)]?.rank>=STATUS_META.studied.rank).length;
+  return {studied,total:list.length,pct:list.length?Math.round(studied/list.length*100):0};
+}
 function renderProgress(){
   const host=document.getElementById('progressScreen');
   const all=records.filter(r=>r.type==='study'||r.type==='practice');
   const totals=progressTotals(all),wr=weekRecords().filter(r=>r.type==='study'||r.type==='practice');
+  const summary=studiedSummary(allLessons().map(x=>x.lesson));
   let browser='';
   if(progressView.level==='root')browser=progressRootHTML();
   if(progressView.level==='area')browser=progressAreaHTML(progressView.areaId);
   if(progressView.level==='section')browser=progressSectionHTML(progressView.areaId,progressView.sectionId);
   if(progressView.level==='lesson')browser=progressLessonHTML(progressView.areaId,progressView.sectionId,progressView.lessonId);
-  host.innerHTML=`<div class="card hero"><div class="hero-main"><div><div class="eyebrow">Eixo 1</div><h2 class="section-title">Mapa de progresso</h2><p class="section-copy">Navegue pela estrutura e veja estado atual, estudo, prática e metas.</p></div><div style="text-align:right"><div class="hero-stat">${formatMin(sumDuration(wr))}</div><div class="hero-label">esta semana</div></div></div><div class="hero-metrics"><div class="metric"><b>${formatMin(totals.study)}</b><span>estudo</span></div><div class="metric"><b>${formatMin(totals.practice)}</b><span>prática</span></div><div class="metric"><b>${formatMin(totals.total)}</b><span>total</span></div></div></div>${browser}`;
+  host.innerHTML=`<div class="card hero"><div class="hero-main"><div><div class="eyebrow">Eixo 1</div><h2 class="section-title">Mapa de progresso</h2><p class="section-copy">As horas pertencem ao Eixo 1. Nos níveis internos, acompanhe aulas e BPM sem duplicar tempo.</p></div><div style="text-align:right"><div class="hero-stat">${formatMin(sumDuration(wr))}</div><div class="hero-label">esta semana</div></div></div><div class="hero-metrics"><div class="metric"><b>${formatMin(totals.study)}</b><span>estudo</span></div><div class="metric"><b>${formatMin(totals.practice)}</b><span>prática</span></div><div class="metric"><b>${formatMin(totals.total)}</b><span>eixo total</span></div></div></div><div class="progress-study-summary"><div><span>Aulas estudadas</span><strong>${summary.pct}%</strong><small>${summary.studied} de ${summary.total}</small></div><div class="progress-study-bar"><span style="width:${summary.pct}%"></span></div></div>${browser}`;
 }
 function breadcrumb(parts){
   return `<div class="progress-breadcrumb">${parts.map((p,i)=>`${i?'<span class="crumb-sep">›</span>':''}<button class="crumb ${i===parts.length-1?'current':''}" onclick="${p.action||''}">${escapeHTML(p.label)}</button>`).join('')}</div>`;
 }
 function progressRootHTML(){
   return `${breadcrumb([{label:'Eixo 1',action:"progressGo('root')"}])}<div class="progress-browser">${E1_STRUCTURE.areas.map(area=>{
-    const rs=areaRecords(area.id),t=progressTotals(rs),lessons=area.sections.flatMap(s=>s.lessons),counts=statusCountsForLessons(lessons);
-    return `<button class="progress-node" onclick="progressOpenArea('${area.id}')"><div class="progress-node-top"><div><div class="eyebrow">${escapeHTML(area.course)}</div><h3>${escapeHTML(area.name)}</h3></div><div class="progress-node-time">${formatMin(t.total)}</div></div><div class="progress-node-sub">${lessons.length} aulas · ${counts.assisted} assistidas · ${counts.studied} estudadas · ${counts.reviewed} revisadas</div><div class="progress-node-metrics"><span class="progress-mini">${formatMin(t.study)} estudo</span><span class="progress-mini">${formatMin(t.practice)} prática</span></div></button>`;
+    const lessons=area.sections.flatMap(s=>s.lessons),summary=studiedSummary(lessons),counts=statusCountsForLessons(lessons);
+    return `<button class="progress-node" onclick="progressOpenArea('${area.id}')"><div class="progress-node-top"><div><div class="eyebrow">${escapeHTML(area.course)}</div><h3>${escapeHTML(area.name)}</h3></div><div class="progress-node-percent">${summary.pct}%</div></div><div class="progress-node-sub">${summary.studied}/${summary.total} aulas estudadas ou revisadas · ${counts.assisted} apenas assistidas</div><div class="progress-node-bar"><span style="width:${summary.pct}%"></span></div></button>`;
   }).join('')}</div>`;
 }
 function progressAreaHTML(areaId){
   const area=findArea(areaId);if(!area)return'';
   return `${breadcrumb([{label:'Eixo 1',action:"progressGo('root')"},{label:area.name,action:`progressOpenArea('${areaId}')`}])}<button class="progress-back" onclick="progressGo('root')">‹ Voltar ao Eixo 1</button><div class="progress-browser">${area.sections.map(section=>{
-    const rs=sectionRecords(section.id),t=progressTotals(rs),counts=statusCountsForLessons(section.lessons);
-    return `<button class="progress-node" onclick="progressOpenSection('${areaId}','${section.id}')"><div class="progress-node-top"><div><div class="eyebrow">${escapeHTML(area.name)}</div><h3>${escapeHTML(section.name)}</h3></div><div class="progress-node-time">${formatMin(t.total)}</div></div><div class="progress-node-sub">${section.lessons.length} aula${section.lessons.length===1?'':'s'} · ${counts.studied+counts.reviewed} estudada${counts.studied+counts.reviewed===1?'':'s'} ou revisada${counts.studied+counts.reviewed===1?'':'s'}</div><div class="progress-node-metrics"><span class="progress-mini">${formatMin(t.study)} estudo</span><span class="progress-mini">${formatMin(t.practice)} prática</span></div></button>`;
+    const summary=studiedSummary(section.lessons);
+    return `<button class="progress-node" onclick="progressOpenSection('${areaId}','${section.id}')"><div class="progress-node-top"><div><div class="eyebrow">${escapeHTML(area.name)}</div><h3>${escapeHTML(section.name)}</h3></div><div class="progress-node-percent">${summary.pct}%</div></div><div class="progress-node-sub">${summary.studied}/${summary.total} aulas estudadas ou revisadas</div><div class="progress-node-bar"><span style="width:${summary.pct}%"></span></div></button>`;
   }).join('')}</div>`;
 }
 function progressSectionHTML(areaId,sectionId){
   const area=findArea(areaId),section=findSection(areaId,sectionId);if(!area||!section)return'';
   return `${breadcrumb([{label:'Eixo 1',action:"progressGo('root')"},{label:area.name,action:`progressOpenArea('${areaId}')`},{label:section.name,action:`progressOpenSection('${areaId}','${sectionId}')`}])}<button class="progress-back" onclick="progressOpenArea('${areaId}')">‹ Voltar para ${escapeHTML(area.name)}</button><div class="progress-browser">${section.lessons.map(lesson=>{
-    const t=progressTotals(lessonRecords(lesson.id)),status=lessonStatusKey(lesson.id);
-    const bests=(lesson.exercises||[]).map(e=>bestBpm(e.id)).filter(Boolean);
-    return `<button class="progress-node" onclick="progressOpenLesson('${areaId}','${sectionId}','${lesson.id}')"><div class="progress-node-top"><div><div class="eyebrow">Aula ${escapeHTML(lesson.code||'')}</div><h3>${escapeHTML(lesson.name)}</h3></div><div class="progress-node-time">${formatMin(t.total)}</div></div><div class="progress-node-sub">${statusHTML(status)}</div><div class="progress-node-metrics"><span class="progress-mini">${formatMin(t.study)} estudo</span><span class="progress-mini">${formatMin(t.practice)} prática</span>${lesson.exercises.length?`<span class="progress-mini">${lesson.exercises.length} exercícios</span>`:''}${bests.length?`<span class="progress-mini">melhor ${Math.max(...bests)} BPM</span>`:''}</div></button>`;
+    const status=lessonStatusKey(lesson.id),currentBpm=(lesson.exercises||[]).map(e=>latestBpm(e.id)).filter(v=>v!==null);
+    return `<button class="progress-node" onclick="progressOpenLesson('${areaId}','${sectionId}','${lesson.id}')"><div class="progress-node-top"><div><div class="eyebrow">Aula ${escapeHTML(lesson.code||'')}</div><h3>${escapeHTML(lesson.name)}</h3></div>${statusHTML(status)}</div><div class="progress-node-sub">${lesson.exercises.length?`${lesson.exercises.length} exercícios${currentBpm.length?` · ${currentBpm.length} com BPM registrado`:''}`:'sem exercícios cadastrados por enquanto'}</div></button>`;
   }).join('')}</div>`;
 }
 function progressLessonHTML(areaId,sectionId,lessonId){
   const area=findArea(areaId),section=findSection(areaId,sectionId),lesson=findLesson(areaId,sectionId,lessonId);if(!area||!section||!lesson)return'';
-  const t=progressTotals(lessonRecords(lessonId));
   const exercises=lesson.exercises||[];
   return `${breadcrumb([{label:'Eixo 1',action:"progressGo('root')"},{label:area.name,action:`progressOpenArea('${areaId}')`},{label:section.name,action:`progressOpenSection('${areaId}','${sectionId}')`},{label:lesson.name,action:''}])}<button class="progress-back" onclick="progressOpenSection('${areaId}','${sectionId}')">‹ Voltar para ${escapeHTML(section.name)}</button>
-  <div class="lesson-detail-head"><div class="lesson-detail-top"><div><div class="eyebrow">Estado atual</div><div class="lesson-detail-title">${escapeHTML(lesson.name)}</div></div>${statusHTML(lessonStatusKey(lessonId))}</div><div class="lesson-detail-meta"><div class="metric"><b>${formatMin(t.study)}</b><span>estudo</span></div><div class="metric"><b>${formatMin(t.practice)}</b><span>prática</span></div><div class="metric"><b>${formatMin(t.total)}</b><span>total</span></div></div></div>
-  ${exercises.length?`<div class="section-label">Exercícios</div><div class="exercise-list">${exercises.map(ex=>{const best=bestBpm(ex.id),goals=getGoals(ex.id);return `<div class="exercise-row"><div class="exercise-row-top"><div><div class="exercise-name">${escapeHTML(ex.name)}</div><div class="progress-note">${formatMin(exerciseSessionTime(ex.id))} em sessões que incluíram este exercício</div></div><div class="exercise-best">${best?`${best} BPM`:'—'}</div></div><div class="goal-line">${goals.length?goals.map(g=>`<span class="goal-chip ${best&&best>=g?'done':''}">${best&&best>=g?'✓ ':''}${g} BPM</span>`).join(''):`<span class="goal-chip">Sem metas</span>`}</div><div class="exercise-actions"><button class="exercise-train" onclick="openPracticeForm('${areaId}','${sectionId}','${lessonId}',null,'${ex.id}')">Registrar prática</button><button class="exercise-goals-btn" onclick="openGoalEditor('${ex.id}','${areaId}','${sectionId}','${lessonId}')">Editar metas</button></div></div>`}).join('')}</div>`:`<div class="empty" style="margin-top:12px">Esta aula não possui exercícios cadastrados por enquanto.</div>`}`;
+  <div class="lesson-detail-head"><div class="lesson-detail-top"><div><div class="eyebrow">Estado atual</div><div class="lesson-detail-title">${escapeHTML(lesson.name)}</div></div>${statusHTML(lessonStatusKey(lessonId))}</div></div>
+  ${exercises.length?`<div class="section-label">Exercícios</div><div class="exercise-list">${exercises.map(ex=>{const current=latestBpm(ex.id),best=bestBpm(ex.id),goals=getGoals(ex.id),history=exerciseBpmHistory(ex.id);return `<div class="exercise-row"><div class="exercise-row-top"><div><div class="exercise-name">${escapeHTML(ex.name)}</div><div class="progress-note">BPM atual${best&&best!==current?` · melhor marca ${best}`:''}</div></div><div class="exercise-best">${current?`${current} BPM`:'—'}</div></div><div class="goal-line">${goals.length?goals.map(g=>`<span class="goal-chip ${best&&best>=g?'done':''}">${best&&best>=g?'✓ ':''}${g} BPM</span>`).join(''):`<span class="goal-chip">Sem metas</span>`}</div><div class="bpm-history"><div class="bpm-history-title">Histórico de BPM</div>${history.length?`<div class="bpm-history-list">${history.map(h=>`<span class="bpm-history-chip"><b>${h.bpm}</b> · ${formatShortDate(h.date)}</span>`).join('')}</div>`:`<div class="progress-note">Nenhum BPM registrado.</div>`}</div><div class="exercise-actions"><button class="exercise-train" onclick="openPracticeForm('${areaId}','${sectionId}','${lessonId}',null,'${ex.id}')">Registrar prática</button><button class="exercise-goals-btn" onclick="openGoalEditor('${ex.id}','${areaId}','${sectionId}','${lessonId}')">Editar metas</button></div></div>`}).join('')}</div>`:`<div class="empty" style="margin-top:12px">Esta aula não possui exercícios cadastrados por enquanto.</div>`}`;
 }
+function formatShortDate(iso){if(!iso)return'—';const p=iso.split('-');return p.length===3?`${p[2]}/${p[1]}/${p[0].slice(2)}`:iso}
 function progressGo(level){progressView={level};renderProgress()}
 function progressOpenArea(areaId){progressView={level:'area',areaId};renderProgress()}
 function progressOpenSection(areaId,sectionId){progressView={level:'section',areaId,sectionId};renderProgress()}
 function progressOpenLesson(areaId,sectionId,lessonId){progressView={level:'lesson',areaId,sectionId,lessonId};renderProgress()}
 
 function renderMore(){
-  document.getElementById('moreScreen').innerHTML=`<div class="more-grid"><div class="eyebrow" style="margin:2px 2px 3px">Versão 7 · ajuste responsivo para iPhone</div>
+  document.getElementById('moreScreen').innerHTML=`<div class="more-grid"><div class="eyebrow" style="margin:2px 2px 3px">Versão 8 · sessão prática multiconteúdo</div>
     <button class="menu-btn" onclick="openGoalsManager()"><strong>Metas dos exercícios</strong><span>Editar, criar, excluir e reorganizar metas de BPM de qualquer exercício.</span></button>
     <button class="menu-btn" onclick="openAppearance()"><strong>Aparência</strong><span>Alternar entre verde escuro, preto, azul e amarelo.</span></button>
     <button class="menu-btn" onclick="exportJSON()"><strong>Exportar backup</strong><span>Baixar registros, metas personalizadas e aparência em JSON.</span></button>
@@ -961,18 +1100,25 @@ function openGoalsManager(){
 
 function exportJSON(){
   const data={app:'baixo-plano-mestre',version:APP_VERSION,exportadoEm:new Date().toISOString(),records,goalOverrides,appearance:{theme:currentTheme}};
-  downloadBlob(new Blob([JSON.stringify(data,null,2)],{type:'application/json'}),'baixo-backup-v6.json');showToast('Backup exportado.');
+  downloadBlob(new Blob([JSON.stringify(data,null,2)],{type:'application/json'}),'baixo-backup-v8.json');showToast('Backup exportado.');
 }
 function csvEscape(v){const s=String(v??'');return `"${s.replace(/"/g,'""')}"`}
 function exportCSV(){
-  let csv='Data;Hora;Tipo;Area;Secao;Aula;Exercicios;Status;BPM;DuracaoMin;Notas\n';
+  let csv='Data;Hora;Tipo;Conteudos;Exercicios;Status;BPM_por_exercicio;DuracaoMin;Notas\n';
   records.forEach(r=>{
-    if(r.type==='legacy'){csv+=[r.date,r.startTime,'legado','','',csvEscape(r.legacyTitle),'','','',r.duration,csvEscape(r.notes)].join(';')+'\n';return}
-    const f=findLessonAny(r.lessonId);if(!f)return;
-    const ex=(r.exerciseIds||[]).map(id=>findExercise(id)?.exercise.name).filter(Boolean).join(' | ');
-    csv+=[r.date,r.startTime,r.type,csvEscape(f.area.name),csvEscape(f.section.name),csvEscape(f.lesson.name),csvEscape(ex),r.type==='study'?(STATUS_META[r.statusAfter]?.label||''):'',r.bpm||'',r.duration,csvEscape(r.notes)].join(';')+'\n';
+    if(r.type==='legacy'){csv+=[r.date,r.startTime,'legado',csvEscape(r.legacyTitle),'','','',r.duration,csvEscape(r.notes)].join(';')+'\n';return}
+    if(r.type==='study'){
+      const f=findLessonAny(r.lessonId);if(!f)return;
+      const path=`${f.area.name} > ${f.section.name} > ${f.lesson.name}`;
+      csv+=[r.date,r.startTime,'study',csvEscape(path),'',STATUS_META[r.statusAfter]?.label||'','',r.duration,csvEscape(r.notes)].join(';')+'\n';return;
+    }
+    const items=practiceItems(r);
+    const paths=[...new Set(items.map(i=>{const f=findExercise(i.exerciseId);return f?`${f.area.name} > ${f.section.name} > ${f.lesson.name}`:''}).filter(Boolean))].join(' | ');
+    const ex=items.map(i=>findExercise(i.exerciseId)?.exercise.name||i.exerciseId).join(' | ');
+    const bpms=items.map(i=>`${findExercise(i.exerciseId)?.exercise.name||i.exerciseId}: ${i.bpm} BPM`).join(' | ');
+    csv+=[r.date,r.startTime,'practice',csvEscape(paths),csvEscape(ex),'',csvEscape(bpms),r.duration,csvEscape(r.notes)].join(';')+'\n';
   });
-  downloadBlob(new Blob(['\ufeff'+csv],{type:'text/csv;charset=utf-8'}),'baixo-registros-v6.csv');showToast('Planilha exportada.');
+  downloadBlob(new Blob(['\ufeff'+csv],{type:'text/csv;charset=utf-8'}),'baixo-registros-v8.csv');showToast('Planilha exportada.');
 }
 function downloadBlob(blob,name){const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=name;a.click();setTimeout(()=>URL.revokeObjectURL(a.href),1000)}
 function handleImport(event){
@@ -1005,7 +1151,7 @@ function handleImport(event){
 migrateOldData();
 applyTheme(currentTheme);
 showHome();
-if('serviceWorker' in navigator){window.addEventListener('load',()=>navigator.serviceWorker.register('./sw.js?v=6').catch(()=>{}))}
+if('serviceWorker' in navigator){window.addEventListener('load',()=>navigator.serviceWorker.register('./sw.js?v=8').catch(()=>{}))}
 </script>
 
 </body>
