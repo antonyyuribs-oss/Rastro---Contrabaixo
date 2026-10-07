@@ -111,7 +111,7 @@ button{color:inherit}
 .section-copy{color:var(--muted);font-size:11px;line-height:1.5;margin-top:5px}
 .card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);box-shadow:0 1px 0 rgba(255,255,255,.015) inset}
 .hero{padding:17px 17px 14px;margin-bottom:14px;position:relative;overflow:hidden}
-.hero::after{content:"♪ ♫ ♩";position:absolute;right:-4px;bottom:-18px;color:rgba(var(--gold-rgb),.13);font-size:84px;letter-spacing:-12px;transform:rotate(-7deg);pointer-events:none}
+.hero::after{content:"♪ ♫ ♩";position:absolute;right:-4px;bottom:-18px;color:rgba(var(--gold-rgb),.20);font-size:92px;letter-spacing:-12px;transform:rotate(-7deg);pointer-events:none}
 .hero-main{display:flex;justify-content:space-between;gap:14px;align-items:flex-start;position:relative;z-index:1}
 .hero-stat{font-size:28px;font-weight:800;letter-spacing:-.05em;color:var(--gold)}
 .hero-label{font-size:9px;color:var(--muted);text-transform:uppercase;letter-spacing:.11em;margin-top:2px}
@@ -121,7 +121,7 @@ button{color:inherit}
 .axis-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
 .axis-card{position:relative;overflow:hidden;min-height:170px;padding:15px;border-radius:20px;background:linear-gradient(150deg,var(--surface-2),var(--surface));border:1px solid var(--border);cursor:pointer;text-align:left;box-shadow:var(--shadow);transition:.16s ease;touch-action:manipulation}
 .axis-card:active{transform:scale(.985);border-color:rgba(var(--gold-rgb),.55)}
-.axis-card::after{content:attr(data-symbol);position:absolute;right:-6px;bottom:-26px;font-family:serif;font-size:124px;line-height:1;color:rgba(var(--gold-rgb),.16);pointer-events:none}
+.axis-card::after{content:attr(data-symbol);position:absolute;right:-6px;bottom:-26px;font-family:serif;font-size:138px;line-height:1;color:rgba(var(--gold-rgb),.24);pointer-events:none}
 .axis-number{font-size:9px;color:var(--gold);font-weight:800;text-transform:uppercase;letter-spacing:.13em}
 .axis-title{margin-top:10px;font-size:17px;line-height:1.12;font-weight:760;letter-spacing:-.02em;max-width:130px}
 .axis-subtitle{margin-top:7px;color:var(--muted);font-size:10px;line-height:1.35;max-width:150px}
@@ -151,9 +151,10 @@ input,select,textarea{width:100%;margin:0 0 15px;background:var(--surface-3);col
 .more-grid{display:grid;gap:9px}.menu-btn{width:100%;padding:14px;border-radius:14px;border:1px solid var(--border);background:var(--surface);text-align:left;cursor:pointer}.menu-btn strong{display:block;font-size:11px}.menu-btn span{display:block;margin-top:4px;color:var(--muted);font-size:9px;line-height:1.4}
 .manage-axis{margin-bottom:14px}.manage-axis-head{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:7px}.manage-axis-head strong{font-size:11px}.manage-axis-head button{padding:7px 9px;border-radius:10px;border:1px solid rgba(var(--gold-rgb),.22);background:var(--gold-soft);color:var(--gold);font-size:9px}.manage-row{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:8px;align-items:center;padding:9px 10px;border-radius:12px;border:1px solid var(--border-soft);background:var(--surface-3);margin-top:6px}.manage-row-copy{min-width:0}.manage-row-copy b{display:block;font-size:10px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.manage-row-copy span{display:block;margin-top:3px;color:var(--muted);font-size:8px}.manage-edit{border:1px solid var(--border);background:var(--surface-2);border-radius:9px;padding:7px 9px;color:var(--text-2);font-size:9px}
 .toast-wrap{position:fixed;left:50%;bottom:calc(82px + env(safe-area-inset-bottom));transform:translateX(-50%);z-index:100;width:min(calc(100% - 28px),520px);display:grid;justify-items:center;pointer-events:none}.toast{padding:10px 13px;border-radius:13px;background:var(--surface-2);border:1px solid var(--border);box-shadow:var(--shadow);font-size:10px;color:var(--text-2)}.toast.error{color:#ffb1b1;border-color:rgba(211,107,107,.35)}
-.music-watermark{position:fixed;right:-14px;top:22vh;z-index:-1;pointer-events:none;writing-mode:vertical-rl;font-family:serif;font-size:58px;line-height:1.05;letter-spacing:8px;color:rgba(var(--gold-rgb),.055);filter:blur(.1px)}
+.music-watermark{position:fixed;right:-14px;top:22vh;z-index:-1;pointer-events:none;writing-mode:vertical-rl;font-family:serif;font-size:64px;line-height:1.05;letter-spacing:8px;color:rgba(var(--gold-rgb),.105);filter:blur(.1px)}
+.music-watermark-left{position:fixed;left:-13px;bottom:17vh;z-index:-1;pointer-events:none;font-family:serif;font-size:54px;line-height:1;color:rgba(var(--gold-rgb),.075);transform:rotate(-10deg)}
 .brand-mark{box-shadow:0 0 0 1px rgba(var(--gold-rgb),.05) inset,0 8px 24px rgba(0,0,0,.14)}
-.axis-card .axis-number::after{content:"  ♪";font-size:12px;letter-spacing:0;color:rgba(var(--gold-rgb),.72)}
+.axis-card .axis-number::after{content:"  ♪";font-size:13px;letter-spacing:0;color:rgba(var(--gold-rgb),.92)}
 .theme-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
 .theme-choice{position:relative;min-height:112px;padding:13px;border:1px solid var(--border);border-radius:16px;background:var(--surface);text-align:left;cursor:pointer;overflow:hidden}
 .theme-choice.active{border-color:rgba(var(--gold-rgb),.7);box-shadow:0 0 0 2px var(--gold-soft) inset}
@@ -169,6 +170,7 @@ input,select,textarea{width:100%;margin:0 0 15px;background:var(--surface-3);col
 </head>
 <body>
 <div class="music-watermark" aria-hidden="true">𝄢 ♪ ♫ ♩ ♭ ♯</div>
+<div class="music-watermark-left" aria-hidden="true">♪ 𝄢 ♫</div>
 <header class="app-header">
   <div class="header-inner">
     <div class="brand-row">
@@ -407,7 +409,7 @@ function renderProgress(){
 }
 
 function renderMore(){
-  document.getElementById('moreScreen').innerHTML=`<div class="more-grid">
+  document.getElementById('moreScreen').innerHTML=`<div class="more-grid"><div class="eyebrow" style="margin:2px 2px 3px">Versão visual 3</div>
     <button class="menu-btn" onclick="openManageCourse()"><strong>Estrutura do curso</strong><span>Adicionar, editar e arquivar subáreas, objetivos em BPM e exercícios internos.</span></button>
     <button class="menu-btn" onclick="openAppearance()"><strong>Aparência</strong><span>Alternar entre verde escuro, preto, azul e amarelo.</span></button>
     <button class="menu-btn" onclick="exportJSON()"><strong>Exportar backup</strong><span>Baixar todos os registros e a estrutura do curso em JSON.</span></button>
@@ -445,8 +447,9 @@ function downloadBlob(blob,name){const a=document.createElement('a');a.href=URL.
 function handleImport(event){const file=event.target.files?.[0];event.target.value='';if(!file)return;const reader=new FileReader();reader.onload=e=>{try{const data=JSON.parse(e.target.result);if(!Array.isArray(data.records)||!Array.isArray(data.axes))throw new Error('Formato inválido');const existing=new Set(records.map(r=>String(r.id)));let added=0;data.records.forEach(r=>{if(!existing.has(String(r.id))){records.push(r);existing.add(String(r.id));added++}});if(confirm('O backup também contém a estrutura do curso. Deseja substituir a estrutura atual pela do backup?'))axes=data.axes;if(data.appearance?.theme&&THEME_META[data.appearance.theme])applyTheme(data.appearance.theme);save();showToast(`${added} registro(s) importado(s).`);refreshCurrent()}catch(err){showToast('Arquivo de backup inválido.','error')}};reader.readAsText(file)}
 
 applyTheme(currentTheme);
+applyTheme(currentTheme);
 showHome();
-if('serviceWorker' in navigator){window.addEventListener('load',()=>navigator.serviceWorker.register('./sw.js').catch(()=>{}))}
+if('serviceWorker' in navigator){window.addEventListener('load',()=>navigator.serviceWorker.register('./sw.js?v=3').catch(()=>{}))}
 </script>
 </body>
 </html>
