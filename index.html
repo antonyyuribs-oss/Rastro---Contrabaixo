@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#0d0f12">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Baixo">
+<link rel="manifest" href="./manifest.json">
+<link rel="apple-touch-icon" href="./icon-192.png">
+<title>Baixo — Plano Mestre</title>
+<style>
+:root{
+  --bg:#0d0f12;
+  --surface:#15181d;
+  --surface-2:#1b1f25;
+  --surface-3:#0a0c0f;
+  --border:#2c3139;
+  --border-soft:rgba(255,255,255,.07);
+  --text:#f2f1ec;
+  --text-2:#d4d0c7;
+  --muted:#8f9298;
+  --gold:#d8b45d;
+  --gold-rgb:216,180,93;
+  --gold-soft:rgba(216,180,93,.13);
+  --red:#d36b6b;
+  --green:#72bf8f;
+  --blue:#78a9d6;
+  --content:780px;
+  --shadow:0 18px 50px rgba(0,0,0,.34);
+  --radius:18px;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{background:var(--bg);color-scheme:dark}
+body{
+  min-height:100vh;
+  font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text",Inter,system-ui,sans-serif;
+  color:var(--text);
+  background:
+    radial-gradient(ellipse at 14% 10%,rgba(216,180,93,.09),transparent 31%),
+    radial-gradient(ellipse at 88% 28%,rgba(82,96,117,.13),transparent 28%),
+    linear-gradient(145deg,#111419 0%,#090b0e 52%,#111318 100%);
+  padding-bottom:calc(92px + env(safe-area-inset-bottom));
+  -webkit-font-smoothing:antialiased;
+  overscroll-behavior-y:none;
+}
+body::before{
+  content:"";
+  position:fixed;inset:0;z-index:-1;pointer-events:none;opacity:.16;
+  background:repeating-linear-gradient(to bottom,transparent 0 42px,rgba(216,180,93,.11) 43px,transparent 44px);
+  mask-image:linear-gradient(to bottom,transparent,black 18%,black 72%,transparent);
+}
+button,input,select,textarea{font:inherit}
+button{color:inherit}
+.hidden{display:none!important}
+.app-header{
+  position:sticky;top:0;z-index:30;
+  background:rgba(11,13,16,.88);
+  backdrop-filter:blur(20px) saturate(140%);
+  -webkit-backdrop-filter:blur(20px) saturate(140%);
+  border-bottom:1px solid var(--border-soft);
+}
+.header-inner{width:min(100%,var(--content));margin:auto;padding:calc(12px + env(safe-area-inset-top)) 18px 13px}
+.brand-row{display:flex;align-items:center;gap:13px}
+.brand-mark{width:40px;height:40px;display:grid;place-items:center;flex:none;border-radius:13px;color:var(--gold);background:var(--gold-soft);border:1px solid rgba(var(--gold-rgb),.25);font-family:serif;font-size:27px;line-height:1}
+#screenTitle{font-size:23px;line-height:1.05;font-weight:780;letter-spacing:-.03em}
+#screenSubtitle{margin-top:5px;color:var(--muted);font-size:11px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.container{width:min(100%,var(--content));margin:auto;padding:18px 16px 30px}
+.eyebrow{color:var(--gold);font-size:9px;text-transform:uppercase;letter-spacing:.16em;font-weight:780}
+.section-title{font-size:17px;letter-spacing:-.015em;margin-top:4px}
+.section-copy{color:var(--muted);font-size:11px;line-height:1.5;margin-top:5px}
+.card{background:rgba(21,24,29,.92);border:1px solid var(--border);border-radius:var(--radius);box-shadow:0 1px 0 rgba(255,255,255,.015) inset}
+.hero{padding:17px 17px 14px;margin-bottom:14px;position:relative;overflow:hidden}
+.hero::after{content:"♪ ♫ ♩";position:absolute;right:-4px;bottom:-18px;color:rgba(var(--gold-rgb),.055);font-size:76px;letter-spacing:-12px;transform:rotate(-7deg);pointer-events:none}
+.hero-main{display:flex;justify-content:space-between;gap:14px;align-items:flex-start;position:relative;z-index:1}
+.hero-stat{font-size:28px;font-weight:800;letter-spacing:-.05em;color:var(--gold)}
+.hero-label{font-size:9px;color:var(--muted);text-transform:uppercase;letter-spacing:.11em;margin-top:2px}
+.hero-metrics{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:16px;position:relative;z-index:1}
+.metric{padding:10px 8px;border-radius:13px;background:rgba(255,255,255,.025);border:1px solid var(--border-soft);text-align:center}
+.metric b{display:block;font-size:14px;font-variant-numeric:tabular-nums}.metric span{display:block;margin-top:3px;color:var(--muted);font-size:8px;text-transform:uppercase;letter-spacing:.06em}
+.axis-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.axis-card{position:relative;overflow:hidden;min-height:170px;padding:15px;border-radius:20px;background:linear-gradient(150deg,rgba(29,33,40,.97),rgba(17,20,25,.98));border:1px solid var(--border);cursor:pointer;text-align:left;box-shadow:var(--shadow);transition:.16s ease;touch-action:manipulation}
+.axis-card:active{transform:scale(.985);border-color:rgba(var(--gold-rgb),.55)}
+.axis-card::after{content:attr(data-symbol);position:absolute;right:-6px;bottom:-26px;font-family:serif;font-size:112px;line-height:1;color:rgba(var(--gold-rgb),.055);pointer-events:none}
+.axis-number{font-size:9px;color:var(--gold);font-weight:800;text-transform:uppercase;letter-spacing:.13em}
+.axis-title{margin-top:10px;font-size:17px;line-height:1.12;font-weight:760;letter-spacing:-.02em;max-width:130px}
+.axis-subtitle{margin-top:7px;color:var(--muted);font-size:10px;line-height:1.35;max-width:150px}
+.axis-footer{position:absolute;left:15px;right:15px;bottom:13px;display:flex;align-items:center;justify-content:space-between;gap:8px;color:var(--muted);font-size:9px}
+.axis-time{color:var(--text-2);font-weight:650}
+.axis-arrow{font-size:18px;color:var(--gold)}
+.subarea-list{display:grid;gap:9px;margin-top:14px}
+.subarea-btn{width:100%;border:1px solid var(--border);background:linear-gradient(180deg,var(--surface-2),var(--surface));border-radius:15px;padding:12px;display:grid;grid-template-columns:42px minmax(0,1fr) auto;gap:11px;align-items:center;text-align:left;cursor:pointer}
+.subarea-btn:active{transform:scale(.993);border-color:rgba(var(--gold-rgb),.5)}
+.sub-code{width:42px;height:42px;border-radius:12px;display:grid;place-items:center;background:var(--surface-3);border:1px solid var(--border-soft);font-size:11px;color:var(--gold);font-weight:780}
+.sub-copy{min-width:0}.sub-copy strong{display:block;font-size:12px;line-height:1.25}.sub-copy span{display:block;margin-top:4px;color:var(--muted);font-size:9px;line-height:1.3}
+.sub-chevron{color:var(--gold);font-size:18px}
+.sheet-meta{display:flex;gap:7px;flex-wrap:wrap;margin-top:8px}.mini-tag{padding:5px 7px;border-radius:999px;background:var(--surface-3);border:1px solid var(--border-soft);font-size:8px;color:var(--muted)}.mini-tag.gold{color:var(--gold);border-color:rgba(var(--gold-rgb),.2);background:var(--gold-soft)}
+.bottom-nav{position:fixed;left:50%;bottom:0;transform:translateX(-50%);z-index:35;width:min(100%,var(--content));display:grid;grid-template-columns:repeat(4,1fr);padding:7px 10px calc(7px + env(safe-area-inset-bottom));background:rgba(11,13,16,.96);border-top:1px solid var(--border-soft);backdrop-filter:blur(22px);-webkit-backdrop-filter:blur(22px)}
+.nav-item{min-height:52px;border:0;background:transparent;border-radius:12px;color:var(--muted);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;font-size:9px;cursor:pointer}.nav-item svg{width:19px;height:19px;stroke:currentColor;fill:none;stroke-width:1.8}.nav-item.active{color:var(--gold)}
+.modal{position:fixed;inset:0;z-index:60;background:rgba(0,0,0,.72);display:flex;align-items:flex-end;justify-content:center;backdrop-filter:blur(3px);-webkit-backdrop-filter:blur(3px);animation:fade .14s ease both}
+.modal-content{width:min(100%,580px);max-height:min(93dvh,850px);overflow:auto;background:linear-gradient(180deg,#1b1f25,#0f1115 40%);border:1px solid var(--border);border-bottom:0;border-radius:27px 27px 0 0;padding:9px 17px calc(19px + env(safe-area-inset-bottom));box-shadow:0 -22px 70px rgba(0,0,0,.55);animation:up .2s ease both;overscroll-behavior:contain}
+.sheet-handle{width:38px;height:4px;border-radius:999px;background:#454a52;margin:2px auto 13px}.sheet-head{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:15px}.sheet-head-copy{min-width:0}.sheet-kicker{font-size:9px;color:var(--gold);letter-spacing:.13em;text-transform:uppercase;font-weight:780}.sheet-title{margin-top:4px;font-size:20px;line-height:1.15;letter-spacing:-.025em}.sheet-close{width:38px;height:38px;border-radius:50%;border:1px solid var(--border);background:var(--surface-2);display:grid;place-items:center;cursor:pointer;font-size:19px;color:var(--muted)}
+.form-label{display:flex;align-items:center;justify-content:space-between;gap:10px;margin:0 0 6px;color:var(--text-2);font-size:11px;font-weight:680}.form-label small{color:var(--muted);font-size:9px;font-weight:500}
+input,select,textarea{width:100%;margin:0 0 15px;background:var(--surface-3);color:var(--text);border:1px solid var(--border);border-radius:13px;padding:12px 13px;outline:none}input:focus,select:focus,textarea:focus{border-color:rgba(var(--gold-rgb),.7);box-shadow:0 0 0 3px var(--gold-soft)}textarea{min-height:92px;resize:vertical}.form-row{display:grid;grid-template-columns:1fr 1fr;gap:9px}.duration-chips{display:grid;grid-template-columns:repeat(5,1fr);gap:6px;margin-bottom:9px}.chip{min-height:39px;border-radius:11px;border:1px solid var(--border);background:var(--surface-2);color:var(--text-2);font-size:10px;font-weight:690;cursor:pointer}.chip.active{border-color:rgba(var(--gold-rgb),.7);background:var(--gold-soft);color:var(--gold)}
+.unit-grid{display:flex;flex-wrap:wrap;gap:7px;margin:0 0 16px}.unit-chip{border:1px solid var(--border);background:var(--surface-2);color:var(--text-2);padding:9px 10px;border-radius:999px;font-size:10px;cursor:pointer}.unit-chip.active{background:var(--gold-soft);border-color:rgba(var(--gold-rgb),.65);color:var(--gold)}
+.goal-strip{display:flex;gap:6px;overflow-x:auto;margin:-4px 0 15px;padding-bottom:2px}.goal-pill{flex:none;padding:7px 9px;border-radius:10px;background:rgba(var(--gold-rgb),.07);border:1px solid rgba(var(--gold-rgb),.14);color:var(--gold);font-size:9px}.primary{width:100%;min-height:50px;border-radius:14px;border:1px solid #c59f48;background:linear-gradient(180deg,#d5b45f,#a98538);color:#15120a;font-weight:800;cursor:pointer}.secondary{width:100%;min-height:44px;border:1px solid var(--border);background:var(--surface-2);border-radius:13px;color:var(--text-2);cursor:pointer}.danger{color:#f09a9a;border-color:rgba(211,107,107,.3);background:rgba(211,107,107,.06)}
+.history-shell{display:grid;gap:14px}.calendar-card{padding:14px}.calendar-top{display:grid;grid-template-columns:40px 1fr 40px;gap:8px;align-items:center;margin-bottom:12px}.calendar-title{text-align:center;font-size:17px;font-weight:740}.icon-btn{width:40px;height:40px;border:1px solid var(--border);border-radius:12px;background:var(--surface-3);color:var(--text-2);cursor:pointer}.calendar-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:5px}.cal-head{text-align:center;color:var(--muted);font-size:8px;text-transform:uppercase;padding:4px 0}.cal-day{position:relative;aspect-ratio:1/1;border:1px solid transparent;border-radius:11px;background:transparent;color:var(--text-2);cursor:pointer;font-size:11px}.cal-day.has{background:var(--surface-2);font-weight:700}.cal-day.has::after{content:"";position:absolute;width:4px;height:4px;border-radius:50%;background:var(--gold);bottom:5px;left:50%;transform:translateX(-50%)}.cal-day.today{border-color:rgba(var(--gold-rgb),.38);color:var(--gold)}.cal-day.selected{background:var(--gold-soft);border-color:rgba(var(--gold-rgb),.48)}
+.day-summary{padding:13px 14px}.day-summary-head{display:flex;align-items:center;justify-content:space-between;gap:10px}.day-summary h3{font-size:14px}.day-total{color:var(--gold);font-size:11px;font-weight:700}.timeline{display:grid;gap:8px;margin-top:11px}.record-card{padding:12px;border-radius:14px;background:var(--surface-3);border:1px solid var(--border-soft);cursor:pointer}.record-top{display:flex;align-items:flex-start;justify-content:space-between;gap:10px}.record-axis{font-size:8px;color:var(--gold);letter-spacing:.1em;text-transform:uppercase;font-weight:780}.record-title{font-size:11px;font-weight:700;margin-top:3px;line-height:1.25}.record-time{font-size:9px;color:var(--muted);white-space:nowrap}.record-meta{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}.record-note{margin-top:9px;padding-top:8px;border-top:1px solid var(--border-soft);color:var(--text-2);font-size:10px;line-height:1.45;white-space:pre-wrap}
+.progress-grid{display:grid;gap:11px}.progress-axis{padding:14px}.progress-head{display:flex;align-items:flex-start;justify-content:space-between;gap:12px}.progress-head h3{font-size:15px}.progress-head span{font-size:10px;color:var(--gold);font-weight:700}.progress-bar{height:7px;border-radius:99px;background:var(--surface-3);overflow:hidden;margin-top:12px}.progress-bar>span{display:block;height:100%;border-radius:99px;background:linear-gradient(90deg,#9f7e35,#dfbf6c)}.progress-list{display:grid;gap:7px;margin-top:12px}.progress-item{padding:10px;border-radius:12px;border:1px solid var(--border-soft);background:rgba(0,0,0,.12)}.progress-item-top{display:flex;align-items:center;justify-content:space-between;gap:10px}.progress-item strong{font-size:10px;line-height:1.25}.progress-value{font-size:10px;color:var(--gold);white-space:nowrap}.progress-note{margin-top:4px;font-size:8px;color:var(--muted);line-height:1.35}.milestones{display:flex;gap:5px;flex-wrap:wrap;margin-top:7px}.milestone{padding:4px 6px;border-radius:8px;border:1px solid var(--border-soft);color:var(--muted);font-size:8px}.milestone.done{border-color:rgba(114,191,143,.28);color:var(--green);background:rgba(114,191,143,.06)}
+.empty{padding:26px 15px;text-align:center;color:var(--muted);border:1px dashed var(--border);border-radius:16px;font-size:10px;line-height:1.5}.empty-symbol{font-size:32px;color:rgba(var(--gold-rgb),.55);font-family:serif;margin-bottom:7px}
+.more-grid{display:grid;gap:9px}.menu-btn{width:100%;padding:14px;border-radius:14px;border:1px solid var(--border);background:var(--surface);text-align:left;cursor:pointer}.menu-btn strong{display:block;font-size:11px}.menu-btn span{display:block;margin-top:4px;color:var(--muted);font-size:9px;line-height:1.4}
+.manage-axis{margin-bottom:14px}.manage-axis-head{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:7px}.manage-axis-head strong{font-size:11px}.manage-axis-head button{padding:7px 9px;border-radius:10px;border:1px solid rgba(var(--gold-rgb),.22);background:var(--gold-soft);color:var(--gold);font-size:9px}.manage-row{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:8px;align-items:center;padding:9px 10px;border-radius:12px;border:1px solid var(--border-soft);background:var(--surface-3);margin-top:6px}.manage-row-copy{min-width:0}.manage-row-copy b{display:block;font-size:10px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.manage-row-copy span{display:block;margin-top:3px;color:var(--muted);font-size:8px}.manage-edit{border:1px solid var(--border);background:var(--surface-2);border-radius:9px;padding:7px 9px;color:var(--text-2);font-size:9px}
+.toast-wrap{position:fixed;left:50%;bottom:calc(82px + env(safe-area-inset-bottom));transform:translateX(-50%);z-index:100;width:min(calc(100% - 28px),520px);display:grid;justify-items:center;pointer-events:none}.toast{padding:10px 13px;border-radius:13px;background:rgba(24,28,33,.98);border:1px solid var(--border);box-shadow:var(--shadow);font-size:10px;color:var(--text-2)}.toast.error{color:#ffb1b1;border-color:rgba(211,107,107,.35)}
+@keyframes fade{from{opacity:0}to{opacity:1}}@keyframes up{from{transform:translateY(20px);opacity:.5}to{transform:translateY(0);opacity:1}}
+@media(max-width:380px){.container{padding-left:12px;padding-right:12px}.axis-grid{gap:8px}.axis-card{min-height:164px;padding:13px}.axis-title{font-size:15px}.duration-chips{grid-template-columns:repeat(3,1fr)}}
+@media(min-width:620px){.axis-card{min-height:184px}.axis-title{font-size:20px;max-width:210px}.axis-subtitle{max-width:220px}.axis-grid{gap:12px}}
+@media(max-width:699px){input,select,textarea{font-size:16px}}
+</style>
+</head>
+<body>
+<header class="app-header">
+  <div class="header-inner">
+    <div class="brand-row">
+      <div class="brand-mark" aria-hidden="true">𝄢</div>
+      <div>
+        <h1 id="screenTitle">Baixo</h1>
+        <div id="screenSubtitle"></div>
+      </div>
+    </div>
+  </div>
+</header>
+<input type="file" id="importFile" accept=".json" hidden onchange="handleImport(event)">
+<main class="container">
+  <section id="homeScreen"></section>
+  <section id="historyScreen" class="hidden"></section>
+  <section id="progressScreen" class="hidden"></section>
+  <section id="moreScreen" class="hidden"></section>
+</main>
+<div id="modalContainer"></div>
+<div id="toastContainer" class="toast-wrap" aria-live="polite"></div>
+<nav class="bottom-nav" aria-label="Navegação principal">
+  <button class="nav-item active" id="navHome" onclick="showHome()"><svg viewBox="0 0 24 24"><path d="M3 11.5 12 4l9 7.5"/><path d="M5.5 10.5V20h13v-9.5"/></svg><span>Registrar</span></button>
+  <button class="nav-item" id="navHistory" onclick="showHistory()"><svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M7 3v4M17 3v4M3 10h18"/></svg><span>Histórico</span></button>
+  <button class="nav-item" id="navProgress" onclick="showProgress()"><svg viewBox="0 0 24 24"><path d="M4 19V9M10 19V5M16 19v-7M22 19H2"/></svg><span>Progresso</span></button>
+  <button class="nav-item" id="navMore" onclick="showMore()"><svg viewBox="0 0 24 24"><circle cx="5" cy="12" r="1" fill="currentColor"/><circle cx="12" cy="12" r="1" fill="currentColor"/><circle cx="19" cy="12" r="1" fill="currentColor"/></svg><span>Mais</span></button>
+</nav>
+<script>
+const DEFAULT_AXES = [
+  {
+    id:'e1',number:1,title:'Domínio técnico',subtitle:'Fundamentos de execução',symbol:'𝄢',
+    subareas:[
+      {id:'e1-i01',code:'01',name:'Exercício de independência dos dedos',group:'Técnica de mão direita e esquerda',metric:'bpm',goals:[100],units:['Exercício 1','Exercício 2','Exercício 3'],archived:false},
+      {id:'e1-i03',code:'03',name:'Grooves pra treinar sua digitação',group:'Precisão rítmica e groove',metric:'bpm',goals:[80,100,120],units:['Groove 1','Groove 2','Groove 3','Groove 4','Groove 5'],archived:false},
+      {id:'e1-tecnica',code:'T',name:'Técnica de mão direita e esquerda',group:'Conteúdo central',metric:'none',goals:[],units:[],archived:false},
+      {id:'e1-ritmo',code:'R',name:'Precisão rítmica e groove',group:'Conteúdo central',metric:'none',goals:[],units:[],archived:false},
+      {id:'e1-percepcao',code:'P',name:'Percepção musical',group:'Conteúdo central',metric:'none',goals:[],units:[],archived:false},
+      {id:'e1-ouvido',code:'O',name:'Treinamento de ouvido',group:'Conteúdo central',metric:'none',goals:[],units:[],archived:false}
+    ]
+  },
+  {
+    id:'e2',number:2,title:'Visão harmônica',subtitle:'Compreensão musical',symbol:'♭',
+    subareas:[
+      {id:'e2-triades',code:'01',name:'Tríades e tétrades',group:'Compreensão musical',metric:'none',goals:[],units:[],archived:false},
+      {id:'e2-campo',code:'02',name:'Campo harmônico maior e menor',group:'Compreensão musical',metric:'none',goals:[],units:[],archived:false},
+      {id:'e2-funcoes',code:'03',name:'Funções harmônicas',group:'Compreensão musical',metric:'none',goals:[],units:[],archived:false},
+      {id:'e2-dominantes',code:'04',name:'Dominantes secundárias',group:'Compreensão musical',metric:'none',goals:[],units:[],archived:false},
+      {id:'e2-estendidos',code:'05',name:'Acordes estendidos',group:'Compreensão musical',metric:'none',goals:[],units:[],archived:false}
+    ]
+  },
+  {
+    id:'e3',number:3,title:'Fluência nas escalas',subtitle:'Fluência no instrumento',symbol:'♯',
+    subareas:[
+      {id:'e3-penta',code:'01',name:'Pentatônicas',group:'Fluência no instrumento',metric:'none',goals:[],units:[],archived:false},
+      {id:'e3-modos',code:'02',name:'Modos gregos',group:'Fluência no instrumento',metric:'none',goals:[],units:[],archived:false},
+      {id:'e3-menores',code:'03',name:'Menor harmônica e melódica',group:'Fluência no instrumento',metric:'none',goals:[],units:[],archived:false},
+      {id:'e3-aplicacao',code:'04',name:'Aplicação das escalas',group:'Fluência no instrumento',metric:'none',goals:[],units:[],archived:false},
+      {id:'e3-braco',code:'05',name:'Desenvolvimento pelo braço inteiro',group:'Fluência no instrumento',metric:'none',goals:[],units:[],archived:false}
+    ]
+  },
+  {
+    id:'e4',number:4,title:'Criação musical',subtitle:'Expressão musical',symbol:'♫',
+    subareas:[
+      {id:'e4-fraseado',code:'01',name:'Fraseado',group:'Expressão musical',metric:'none',goals:[],units:[],archived:false},
+      {id:'e4-musicalidade',code:'02',name:'Musicalidade',group:'Expressão musical',metric:'none',goals:[],units:[],archived:false},
+      {id:'e4-escolhas',code:'03',name:'Escolhas criativas',group:'Expressão musical',metric:'none',goals:[],units:[],archived:false},
+      {id:'e4-linguagem',code:'04',name:'Construção de linguagem musical',group:'Expressão musical',metric:'none',goals:[],units:[],archived:false}
+    ]
+  }
+];
+
+let axes = loadJSON('baixo_axes',null) || structuredCloneSafe(DEFAULT_AXES);
+let records = loadJSON('baixo_records',[]);
+let selectedDate = localISO();
+let calendarMonth = new Date().getMonth();
+let calendarYear = new Date().getFullYear();
+let currentScreen='home';
+let selectedUnits=[];
+let toastTimer=null;
+
+function loadJSON(key,fallback){try{const raw=localStorage.getItem(key);return raw?JSON.parse(raw):fallback}catch{return fallback}}
+function save(){localStorage.setItem('baixo_axes',JSON.stringify(axes));localStorage.setItem('baixo_records',JSON.stringify(records))}
+function structuredCloneSafe(v){return JSON.parse(JSON.stringify(v))}
+function localISO(date=new Date()){return `${date.getFullYear()}-${String(date.getMonth()+1).padStart(2,'0')}-${String(date.getDate()).padStart(2,'0')}`}
+function nowTime(){const d=new Date();return `${String(d.getHours()).padStart(2,'0')}:${String(d.getMinutes()).padStart(2,'0')}`}
+function escapeHTML(v){return String(v??'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#039;')}
+function inlineArg(v){return JSON.stringify(String(v??'')).replace(/&/g,'\\u0026').replace(/</g,'\\u003c').replace(/>/g,'\\u003e').replace(/"/g,'&quot;')}
+function formatMin(min){min=Number(min)||0;if(min<60)return `${min} min`;const h=Math.floor(min/60),m=min%60;return m?`${h}h ${m}min`:`${h}h`}
+function formatDateBR(iso){if(!iso)return'';const [y,m,d]=iso.split('-').map(Number);return new Intl.DateTimeFormat('pt-BR',{day:'2-digit',month:'long',year:'numeric'}).format(new Date(y,m-1,d))}
+function startOfWeek(d=new Date()){const x=new Date(d);const day=x.getDay();const diff=(day===0?-6:1-day);x.setDate(x.getDate()+diff);x.setHours(0,0,0,0);return x}
+function showToast(msg,type='ok'){const h=document.getElementById('toastContainer');clearTimeout(toastTimer);h.innerHTML=`<div class="toast ${type==='error'?'error':''}">${escapeHTML(msg)}</div>`;toastTimer=setTimeout(()=>h.innerHTML='',2200)}
+function axisById(id){return axes.find(a=>a.id===id)}
+function subById(axisId,subId){return axisById(axisId)?.subareas.find(s=>s.id===subId)}
+function activeSubs(axis){return axis.subareas.filter(s=>!s.archived)}
+function weekRecords(){const start=startOfWeek();const end=new Date(start);end.setDate(end.getDate()+7);return records.filter(r=>{const d=new Date(`${r.date}T12:00:00`);return d>=start&&d<end})}
+function sumDuration(list){return list.reduce((s,r)=>s+(Number(r.duration)||0),0)}
+function uniqueDays(list){return new Set(list.map(r=>r.date)).size}
+
+function setHeader(title,subtitle=''){document.getElementById('screenTitle').textContent=title;document.getElementById('screenSubtitle').textContent=subtitle}
+function setNav(screen){['Home','History','Progress','More'].forEach(x=>document.getElementById(`nav${x}`)?.classList.remove('active'));const map={home:'Home',history:'History',progress:'Progress',more:'More'};document.getElementById(`nav${map[screen]}`)?.classList.add('active')}
+function showOnly(id){['homeScreen','historyScreen','progressScreen','moreScreen'].forEach(x=>document.getElementById(x).classList.toggle('hidden',x!==id))}
+function showHome(){currentScreen='home';showOnly('homeScreen');setNav('home');setHeader('Baixo',new Intl.DateTimeFormat('pt-BR',{weekday:'long',day:'numeric',month:'long'}).format(new Date()));renderHome()}
+function showHistory(){currentScreen='history';showOnly('historyScreen');setNav('history');setHeader('Histórico','Sessões e registros por dia');renderHistory()}
+function showProgress(){currentScreen='progress';showOnly('progressScreen');setNav('progress');setHeader('Progresso','Tempo, frequência e objetivos mensuráveis');renderProgress()}
+function showMore(){currentScreen='more';showOnly('moreScreen');setNav('more');setHeader('Mais','Curso, dados e manutenção');renderMore()}
+
+function renderHome(){
+  const host=document.getElementById('homeScreen');
+  const wr=weekRecords();
+  const total=sumDuration(wr);
+  const sessions=wr.length;
+  const days=uniqueDays(wr);
+  host.innerHTML=`
+    <div class="card hero">
+      <div class="hero-main">
+        <div><div class="eyebrow">Plano mestre</div><h2 class="section-title">Seu estudo, registrado em segundos.</h2><p class="section-copy">Escolha um eixo, a subárea e registre o que foi feito.</p></div>
+        <div style="text-align:right"><div class="hero-stat">${formatMin(total)}</div><div class="hero-label">esta semana</div></div>
+      </div>
+      <div class="hero-metrics">
+        <div class="metric"><b>${sessions}</b><span>registros</span></div>
+        <div class="metric"><b>${days}</b><span>dias</span></div>
+        <div class="metric"><b>${records.length}</b><span>total</span></div>
+      </div>
+    </div>
+    <div class="eyebrow" style="margin:4px 2px 9px">Registrar treino</div>
+    <div class="axis-grid">${axes.map(axis=>{
+      const mins=sumDuration(wr.filter(r=>r.axisId===axis.id));
+      return `<button class="axis-card" data-symbol="${escapeHTML(axis.symbol)}" onclick="openAxis(${inlineArg(axis.id)})">
+        <div class="axis-number">Eixo ${axis.number}</div>
+        <div class="axis-title">${escapeHTML(axis.title)}</div>
+        <div class="axis-subtitle">${escapeHTML(axis.subtitle)}</div>
+        <div class="axis-footer"><span class="axis-time">${formatMin(mins)} na semana</span><span class="axis-arrow">›</span></div>
+      </button>`}).join('')}</div>`;
+}
+
+function showModal(title,body,kicker='Registro'){
+  document.getElementById('modalContainer').innerHTML=`<div class="modal" onclick="if(event.target===this)closeModal()"><div class="modal-content"><div class="sheet-handle"></div><div class="sheet-head"><div class="sheet-head-copy"><div class="sheet-kicker">${escapeHTML(kicker)}</div><div class="sheet-title">${escapeHTML(title)}</div></div><button class="sheet-close" onclick="closeModal()" aria-label="Fechar">×</button></div>${body}</div></div>`;
+  document.body.style.overflow='hidden';
+}
+function closeModal(){document.getElementById('modalContainer').innerHTML='';document.body.style.overflow=''}
+
+function openAxis(axisId){
+  const axis=axisById(axisId);if(!axis)return;
+  const subs=activeSubs(axis);
+  showModal(`Eixo ${axis.number} — ${axis.title}`,`
+    <p class="section-copy" style="margin-top:-5px">Selecione o conteúdo treinado.</p>
+    <div class="subarea-list">${subs.map(s=>`<button class="subarea-btn" onclick="openRecordForm(${inlineArg(axis.id)},${inlineArg(s.id)})"><span class="sub-code">${escapeHTML(s.code||'•')}</span><span class="sub-copy"><strong>${escapeHTML(s.name)}</strong><span>${escapeHTML(s.group||axis.subtitle)}</span></span><span class="sub-chevron">›</span></button>`).join('')}</div>
+  `,`Eixo ${axis.number}`);
+}
+
+function openRecordForm(axisId,subId,recordId=null){
+  const axis=axisById(axisId),sub=subById(axisId,subId);if(!axis||!sub)return;
+  const existing=recordId?records.find(r=>String(r.id)===String(recordId)):null;
+  selectedUnits=existing?.units?[...existing.units]:[];
+  const goals=(sub.goals||[]).filter(Number.isFinite);
+  const unitHtml=(sub.units||[]).length?`<div class="form-label">Parte treinada <small>marque uma ou mais</small></div><div class="unit-grid" id="unitGrid">${sub.units.map(u=>`<button type="button" class="unit-chip ${selectedUnits.includes(u)?'active':''}" data-unit="${escapeHTML(u)}" onclick="toggleUnit(this)">${escapeHTML(u)}</button>`).join('')}</div>`:'';
+  const metricHtml=sub.metric==='bpm'?`<div class="form-label">BPM trabalhado <small>opcional</small></div><input id="recordMetric" type="number" min="20" max="400" inputmode="numeric" placeholder="Ex.: 70" value="${existing?.metricValue??''}">${goals.length?`<div class="goal-strip">${goals.map((g,i)=>`<div class="goal-pill">${i===0?'1ª meta':`${i+1}ª meta`}: ${g} BPM</div>`).join('')}</div>`:''}`:'';
+  showModal(existing?'Editar registro':sub.name,`
+    <div class="sheet-meta"><span class="mini-tag gold">Eixo ${axis.number}</span><span class="mini-tag">${escapeHTML(sub.group||axis.subtitle)}</span></div>
+    <div style="height:15px"></div>
+    ${unitHtml}${metricHtml}
+    <div class="form-row"><div><div class="form-label">Data</div><input id="recordDate" type="date" value="${existing?.date||localISO()}"></div><div><div class="form-label">Hora</div><input id="recordTime" type="time" value="${existing?.startTime||nowTime()}"></div></div>
+    <div class="form-label">Duração <small>minutos</small></div>
+    <div class="duration-chips">${[10,20,30,45,60].map(n=>`<button type="button" class="chip ${(existing?.duration===n)?'active':''}" onclick="setDuration(${n},this)">${n}</button>`).join('')}</div>
+    <input id="recordDuration" type="number" min="1" max="600" inputmode="numeric" placeholder="Duração em minutos" value="${existing?.duration??''}">
+    <div class="form-label">Nota <small>opcional</small></div><textarea id="recordNotes" placeholder="Como foi o treino? O que travou? O que melhorou?">${escapeHTML(existing?.notes||'')}</textarea>
+    <button class="primary" onclick="saveRecord(${inlineArg(axisId)},${inlineArg(subId)},${recordId?inlineArg(recordId):'null'})">${existing?'Salvar alterações':'Salvar registro'}</button>
+    ${existing?`<div style="height:9px"></div><button class="secondary danger" onclick="deleteRecord(${inlineArg(recordId)})">Excluir registro</button>`:''}
+  `,existing?'Edição':`Eixo ${axis.number}`);
+}
+function toggleUnit(el){const u=el.dataset.unit;const i=selectedUnits.indexOf(u);if(i>=0)selectedUnits.splice(i,1);else selectedUnits.push(u);el.classList.toggle('active')}
+function setDuration(n,el){document.getElementById('recordDuration').value=n;document.querySelectorAll('.duration-chips .chip').forEach(x=>x.classList.toggle('active',x===el))}
+function saveRecord(axisId,subId,recordId){
+  const sub=subById(axisId,subId);if(!sub)return;
+  const date=document.getElementById('recordDate').value;
+  const startTime=document.getElementById('recordTime').value;
+  const duration=Number(document.getElementById('recordDuration').value)||0;
+  const notes=document.getElementById('recordNotes').value.trim();
+  const metricValue=sub.metric==='bpm'?(Number(document.getElementById('recordMetric')?.value)||null):null;
+  if(!date||!startTime){showToast('Informe data e horário.','error');return}
+  if(duration<=0){showToast('Informe a duração do treino.','error');return}
+  if((sub.units||[]).length && selectedUnits.length===0){showToast('Marque pelo menos uma parte treinada.','error');return}
+  const payload={id:recordId||`${Date.now()}-${Math.random().toString(16).slice(2)}`,axisId,subId,date,startTime,duration,notes,metricValue,units:[...selectedUnits],updatedAt:new Date().toISOString()};
+  if(recordId){const i=records.findIndex(r=>String(r.id)===String(recordId));if(i>=0)records[i]=payload}else records.push(payload);
+  records.sort((a,b)=>`${a.date} ${a.startTime}`.localeCompare(`${b.date} ${b.startTime}`));save();closeModal();showToast(recordId?'Registro atualizado.':'Treino registrado.');refreshCurrent();
+}
+function deleteRecord(id){if(!confirm('Excluir este registro?'))return;records=records.filter(r=>String(r.id)!==String(id));save();closeModal();showToast('Registro excluído.');refreshCurrent()}
+function refreshCurrent(){if(currentScreen==='home')renderHome();if(currentScreen==='history')renderHistory();if(currentScreen==='progress')renderProgress();if(currentScreen==='more')renderMore()}
+
+function renderHistory(){
+  const host=document.getElementById('historyScreen');
+  const months=['Janeiro','Fevereiro','Março','Abril','Maio','Junho','Julho','Agosto','Setembro','Outubro','Novembro','Dezembro'];
+  const first=new Date(calendarYear,calendarMonth,1),total=new Date(calendarYear,calendarMonth+1,0).getDate(),start=first.getDay();
+  const monthKey=`${calendarYear}-${String(calendarMonth+1).padStart(2,'0')}`;
+  const counts={};records.filter(r=>r.date.startsWith(monthKey)).forEach(r=>counts[r.date]=(counts[r.date]||0)+1);
+  let days='';for(let i=0;i<start;i++)days+='<span></span>';for(let d=1;d<=total;d++){const iso=`${calendarYear}-${String(calendarMonth+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;days+=`<button class="cal-day ${counts[iso]?'has':''} ${iso===localISO()?'today':''} ${iso===selectedDate?'selected':''}" onclick="selectHistoryDate(${inlineArg(iso)})">${d}</button>`}
+  const dayRecords=records.filter(r=>r.date===selectedDate).sort((a,b)=>a.startTime.localeCompare(b.startTime));
+  host.innerHTML=`<div class="history-shell"><div class="card calendar-card"><div class="calendar-top"><button class="icon-btn" onclick="changeMonth(-1)">‹</button><div class="calendar-title">${months[calendarMonth]} ${calendarYear}</div><button class="icon-btn" onclick="changeMonth(1)">›</button></div><div class="calendar-grid">${['D','S','T','Q','Q','S','S'].map(x=>`<div class="cal-head">${x}</div>`).join('')}${days}</div></div>
+  <div class="card day-summary"><div class="day-summary-head"><div><div class="eyebrow">Dia selecionado</div><h3>${formatDateBR(selectedDate)}</h3></div><div class="day-total">${formatMin(sumDuration(dayRecords))}</div></div>${dayRecords.length?`<div class="timeline">${dayRecords.map(recordCardHTML).join('')}</div>`:`<div class="empty" style="margin-top:12px"><div class="empty-symbol">♪</div>Nenhum treino registrado neste dia.</div>`}</div></div>`;
+}
+function recordCardHTML(r){const a=axisById(r.axisId),s=subById(r.axisId,r.subId);if(!a||!s)return'';return `<div class="record-card" onclick="openRecordForm(${inlineArg(r.axisId)},${inlineArg(r.subId)},${inlineArg(r.id)})"><div class="record-top"><div><div class="record-axis">Eixo ${a.number} · ${escapeHTML(a.title)}</div><div class="record-title">${escapeHTML(s.name)}</div></div><div class="record-time">${escapeHTML(r.startTime)} · ${formatMin(r.duration)}</div></div><div class="record-meta">${(r.units||[]).map(u=>`<span class="mini-tag">${escapeHTML(u)}</span>`).join('')}${r.metricValue?`<span class="mini-tag gold">${r.metricValue} BPM</span>`:''}</div>${r.notes?`<div class="record-note">${escapeHTML(r.notes)}</div>`:''}</div>`}
+function changeMonth(delta){calendarMonth+=delta;if(calendarMonth<0){calendarMonth=11;calendarYear--}if(calendarMonth>11){calendarMonth=0;calendarYear++}const day=selectedDate?.split('-')[2]||'01';selectedDate=`${calendarYear}-${String(calendarMonth+1).padStart(2,'0')}-${day}`;renderHistory()}
+function selectHistoryDate(iso){selectedDate=iso;renderHistory()}
+
+function progressForUnit(sub,unit){const vals=records.filter(r=>r.subId===sub.id&&r.metricValue&&(r.units||[]).includes(unit)).map(r=>Number(r.metricValue));return vals.length?Math.max(...vals):null}
+function progressForSub(sub){const vals=records.filter(r=>r.subId===sub.id&&r.metricValue).map(r=>Number(r.metricValue));return vals.length?Math.max(...vals):null}
+function renderProgress(){
+  const host=document.getElementById('progressScreen');
+  const wr=weekRecords(),allMin=sumDuration(records),weekMin=sumDuration(wr);
+  const cards=axes.map(axis=>{
+    const axisRecords=records.filter(r=>r.axisId===axis.id),axisMin=sumDuration(axisRecords),share=allMin?Math.round(axisMin/allMin*100):0;
+    const measured=activeSubs(axis).filter(s=>s.metric==='bpm'&&(s.goals||[]).length);
+    const items=measured.length?measured.map(s=>{
+      if((s.units||[]).length){return `<div class="progress-item"><div class="progress-item-top"><strong>${escapeHTML(s.name)}</strong><span class="progress-value">por exercício</span></div>${s.units.map(u=>{const best=progressForUnit(s,u);const goals=s.goals||[];return `<div style="margin-top:8px"><div class="progress-item-top"><span style="font-size:9px;color:var(--text-2)">${escapeHTML(u)}</span><span class="progress-value">${best?`${best} BPM`:'—'}</span></div><div class="milestones">${goals.map(g=>`<span class="milestone ${best>=g?'done':''}">${g} BPM</span>`).join('')}</div></div>`}).join('')}</div>`}
+      const best=progressForSub(s);return `<div class="progress-item"><div class="progress-item-top"><strong>${escapeHTML(s.name)}</strong><span class="progress-value">${best?`${best} BPM`:'—'}</span></div><div class="milestones">${(s.goals||[]).map(g=>`<span class="milestone ${best>=g?'done':''}">${g} BPM</span>`).join('')}</div></div>`
+    }).join(''):`<div class="progress-note">Ainda não há objetivos numéricos definidos neste eixo. Os registros de tempo e frequência continuam sendo contabilizados.</div>`;
+    return `<div class="card progress-axis"><div class="progress-head"><div><div class="eyebrow">Eixo ${axis.number}</div><h3>${escapeHTML(axis.title)}</h3></div><span>${formatMin(axisMin)}</span></div><div class="progress-bar"><span style="width:${share}%"></span></div><div class="progress-list">${items}</div></div>`;
+  }).join('');
+  host.innerHTML=`<div class="card hero"><div class="hero-main"><div><div class="eyebrow">Visão geral</div><h2 class="section-title">Evolução registrada</h2><p class="section-copy">Objetivos numéricos aparecem apenas onde já foram definidos.</p></div><div style="text-align:right"><div class="hero-stat">${formatMin(weekMin)}</div><div class="hero-label">esta semana</div></div></div><div class="hero-metrics"><div class="metric"><b>${formatMin(allMin)}</b><span>tempo total</span></div><div class="metric"><b>${records.length}</b><span>sessões</span></div><div class="metric"><b>${uniqueDays(records)}</b><span>dias</span></div></div></div><div class="progress-grid">${cards}</div>`;
+}
+
+function renderMore(){
+  document.getElementById('moreScreen').innerHTML=`<div class="more-grid">
+    <button class="menu-btn" onclick="openManageCourse()"><strong>Estrutura do curso</strong><span>Adicionar, editar e arquivar subáreas, objetivos em BPM e exercícios internos.</span></button>
+    <button class="menu-btn" onclick="exportJSON()"><strong>Exportar backup</strong><span>Baixar todos os registros e a estrutura do curso em JSON.</span></button>
+    <button class="menu-btn" onclick="document.getElementById('importFile').click()"><strong>Importar backup</strong><span>Mesclar registros e estrutura salvos anteriormente.</span></button>
+    <button class="menu-btn" onclick="exportCSV()"><strong>Exportar planilha</strong><span>Baixar os registros em CSV para análise externa.</span></button>
+  </div>`;
+}
+function openManageCourse(){
+  showModal('Estrutura do curso',axes.map(a=>`<div class="manage-axis"><div class="manage-axis-head"><strong>Eixo ${a.number} — ${escapeHTML(a.title)}</strong><button onclick="openSubareaEditor(${inlineArg(a.id)})">+ adicionar</button></div>${a.subareas.map(s=>`<div class="manage-row"><div class="manage-row-copy"><b>${escapeHTML(s.name)}</b><span>${s.archived?'Arquivada · ':''}${s.metric==='bpm'?'BPM':'sem métrica numérica'}${(s.goals||[]).length?` · metas ${s.goals.join(' / ')}`:''}</span></div><button class="manage-edit" onclick="openSubareaEditor(${inlineArg(a.id)},${inlineArg(s.id)})">Editar</button></div>`).join('')}</div>`).join(''),'Configuração')
+}
+function openSubareaEditor(axisId,subId=null){
+  const axis=axisById(axisId);const s=subId?subById(axisId,subId):null;
+  showModal(s?'Editar subárea':'Nova subárea',`
+    <div class="form-label">Nome</div><input id="subName" value="${escapeHTML(s?.name||'')}" placeholder="Nome do conteúdo ou exercício">
+    <div class="form-row"><div><div class="form-label">Código</div><input id="subCode" value="${escapeHTML(s?.code||'')}" placeholder="Ex.: 04"></div><div><div class="form-label">Tipo de progresso</div><select id="subMetric"><option value="none" ${s?.metric!=='bpm'?'selected':''}>Sem métrica</option><option value="bpm" ${s?.metric==='bpm'?'selected':''}>BPM</option></select></div></div>
+    <div class="form-label">Grupo / descrição</div><input id="subGroup" value="${escapeHTML(s?.group||axis.subtitle)}">
+    <div class="form-label">Objetivos <small>separados por vírgula</small></div><input id="subGoals" value="${escapeHTML((s?.goals||[]).join(', '))}" placeholder="Ex.: 80, 100, 120">
+    <div class="form-label">Exercícios internos <small>um por linha</small></div><textarea id="subUnits" placeholder="Groove 1\nGroove 2\nGroove 3">${escapeHTML((s?.units||[]).join('\n'))}</textarea>
+    <button class="primary" onclick="saveSubarea(${inlineArg(axisId)},${subId?inlineArg(subId):'null'})">Salvar</button>
+    ${s?`<div style="height:9px"></div><button class="secondary" onclick="toggleArchiveSubarea(${inlineArg(axisId)},${inlineArg(subId)})">${s.archived?'Reativar':'Arquivar'} subárea</button>`:''}
+  `,'Estrutura do curso')
+}
+function saveSubarea(axisId,subId){
+  const axis=axisById(axisId);if(!axis)return;const name=document.getElementById('subName').value.trim();if(!name){showToast('Informe o nome.','error');return}
+  const goals=document.getElementById('subGoals').value.split(',').map(x=>Number(x.trim())).filter(x=>Number.isFinite(x)&&x>0).sort((a,b)=>a-b);
+  const units=document.getElementById('subUnits').value.split('\n').map(x=>x.trim()).filter(Boolean);
+  const data={id:subId||`${axisId}-${Date.now()}`,code:document.getElementById('subCode').value.trim()||'•',name,group:document.getElementById('subGroup').value.trim()||axis.subtitle,metric:document.getElementById('subMetric').value,goals,units,archived:false};
+  if(subId){const i=axis.subareas.findIndex(x=>x.id===subId);data.archived=axis.subareas[i]?.archived||false;if(i>=0)axis.subareas[i]=data}else axis.subareas.push(data);save();openManageCourse();showToast('Estrutura atualizada.');refreshCurrent()
+}
+function toggleArchiveSubarea(axisId,subId){const s=subById(axisId,subId);if(!s)return;s.archived=!s.archived;save();openManageCourse();showToast(s.archived?'Subárea arquivada.':'Subárea reativada.');refreshCurrent()}
+
+function exportJSON(){const data={app:'baixo-plano-mestre',version:1,exportadoEm:new Date().toISOString(),axes,records};const blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'});downloadBlob(blob,'baixo-backup.json');showToast('Backup exportado.')}
+function exportCSV(){let csv='Data;Hora;Eixo;Subarea;Unidades;BPM;DuracaoMin;Notas\n';records.forEach(r=>{const a=axisById(r.axisId),s=subById(r.axisId,r.subId);const row=[r.date,r.startTime,a?`Eixo ${a.number} - ${a.title}`:r.axisId,s?.name||r.subId,(r.units||[]).join(' | '),r.metricValue||'',r.duration,`"${String(r.notes||'').replace(/"/g,'""')}"`];csv+=row.join(';')+'\n'});downloadBlob(new Blob(['\ufeff'+csv],{type:'text/csv;charset=utf-8'}),'baixo-registros.csv');showToast('Planilha exportada.')}
+function downloadBlob(blob,name){const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=name;a.click();setTimeout(()=>URL.revokeObjectURL(a.href),1000)}
+function handleImport(event){const file=event.target.files?.[0];event.target.value='';if(!file)return;const reader=new FileReader();reader.onload=e=>{try{const data=JSON.parse(e.target.result);if(!Array.isArray(data.records)||!Array.isArray(data.axes))throw new Error('Formato inválido');const existing=new Set(records.map(r=>String(r.id)));let added=0;data.records.forEach(r=>{if(!existing.has(String(r.id))){records.push(r);existing.add(String(r.id));added++}});if(confirm('O backup também contém a estrutura do curso. Deseja substituir a estrutura atual pela do backup?'))axes=data.axes;save();showToast(`${added} registro(s) importado(s).`);refreshCurrent()}catch(err){showToast('Arquivo de backup inválido.','error')}};reader.readAsText(file)}
+
+showHome();
+if('serviceWorker' in navigator){window.addEventListener('load',()=>navigator.serviceWorker.register('./sw.js').catch(()=>{}))}
+</script>
+</body>
+</html>
