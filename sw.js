@@ -1,4 +1,4 @@
-const CACHE='baixo-v3';
+const CACHE='baixo-v4';
 const STATIC=['./manifest.json','./icon-192.png','./icon-512.png'];
 
 self.addEventListener('install',event=>{
