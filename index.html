@@ -367,7 +367,7 @@ html,body{width:100%;max-width:100%;overflow-x:hidden}
 </nav>
 
 <script>
-const APP_VERSION = 10;
+const APP_VERSION = 11;
 const STATUS_META = {
   not_watched:{label:'Não assistida',cls:'not-watched',rank:0},
   assisted:{label:'Assistida',cls:'assisted',rank:1},
@@ -1201,7 +1201,48 @@ const E2_STRUCTURE = {
   ]
 };
 
-const AXIS_STRUCTURES_V10={e1:E1_STRUCTURE,e2:E2_STRUCTURE};
+
+const E3_ESCALAS_LESSONS = ["Aula 01 - Escala Maior Natural de DÓ", "Aula 02 - Escala Maior Natural (de C até Db)", "Aula 03 - Escala Maior Natural (de F# até G)", "Aula 04 - Como treinar", "Aula 05 - Escala Menor Natural de DÓ menor (Entendendo os Fundamentos)", "Aula 06 - Escala Menor Natural no ciclo de quarta (de C até C#)", "Aula 07 - Escala Menor Natural no ciclo de quarta (de F# até G) + Como treinar", "Aula 08 - Modos Gregos [AULA PARTICULAR]", "Aula 09 - Sonoridade de cada Modo | Treino em todos os tons", "Aula 10 - Escala Menor Harmônica 1", "Aula 11 - Escala Menor Harmônica 2", "Aula 12 - Escala Menor Harmônica | Estudo nos 12 tons | Como Estudar", "Aula 13 - Escala Menor Melódica"];
+const E3_STRUCTURE = {
+  id:'e3',
+  title:'Escalas',
+  subtitle:'Fluência no instrumento',
+  symbol:'♯',
+  areas:[{
+    id:'e3-escalas',
+    name:'Escalas',
+    course:'Escalas',
+    symbol:'♯',
+    sections:[{
+      id:'e3-escalas-course',
+      name:'Escalas',
+      subtitle:'Fluência no instrumento',
+      lessons:makeLessonList('e3-escalas',E3_ESCALAS_LESSONS)
+    }]
+  }]
+};
+
+const E4_IMPROVISACAO_LESSONS = ["Aula 01 - Improvisação em tonalidade maior - Introdução e entendendo a escala na primeira reigão.mp4", "Aula 02 - Entendendo as tétrades, aplicando no improviso + treino da semana.mp4", "Aula 03 - CONEXÕES TÉTRADES COM APROXIMAÇÕES II V I MAIOR.mp4", "Aula 04 - Cadência II V I com conexão no ciclo de quarta.mp4", "Aula 05 - CONEXÕES TÉTRADES COM APROXIMAÇÕES II V I MAIOR.mp4 .mp4", "Aula 06 - Licks para Cadência II V I.mp4", "Aula 07 - Tire solos de baixistas, guitarristas, saxofonistas, pianistas...", "Aula 08 - Introdução a improvisação em tonalidades menores - Entendendo os fundamentos.mp4", "Aula 09 - Escala menor natural de Lá menor.mp4", "Aula 10 - Escala menor harmônica.mp4", "Aula 11 - Tétrades arpejadas.mp4", "Aula 12 - Como treinar.mp4", "Aula 13 - Escala menor melódica.mp4", "Aula 14 - Licks para cadência II V I menor.mp4", "Aula 15 - Conexão de tétrades II V I menor no ciclo de quartas.mp4", "Aula 16 - Aproximações cromáticas ascendentes.mp4 .mp4", "Aula 17 - Aproximações descendentes.mp4 .mp4", "Aula 18 - Tire solos de baixistas, guitarristas, saxofonistas, tecladistas", "Aula 19 - Parte 1 - Como Aplicar os Modos das Escala Maior Natural, Menor Harmônica e Menor Melódica", "Aula 20 - Parte 2 - Como Aplicar os Modos das Escala Maior Natural, Menor Harmônica e Menor Melódica", "Aula 21 - O passo a passo para soar TORTO nos improvisos", "Aula 22 - O passo a passo para soar TORTO nos improvisos | PT 2", "Aula 23 - Como e o que estudar para entender a Escala Menor Melódica + como melhorar no improviso"];
+const E4_STRUCTURE = {
+  id:'e4',
+  title:'Improvisação e Criatividade',
+  subtitle:'Expressão musical',
+  symbol:'♫',
+  areas:[{
+    id:'e4-improvisacao-criatividade',
+    name:'Improvisação e Criatividade',
+    course:'Improvisação e Criatividade',
+    symbol:'♫',
+    sections:[{
+      id:'e4-improvisacao-course',
+      name:'Improvisação e Criatividade',
+      subtitle:'Expressão musical',
+      lessons:makeLessonList('e4-improvisacao',E4_IMPROVISACAO_LESSONS)
+    }]
+  }]
+};
+
+const AXIS_STRUCTURES_V10={e1:E1_STRUCTURE,e2:E2_STRUCTURE,e3:E3_STRUCTURE,e4:E4_STRUCTURE};
 let customExercises=loadJSON('baixo_custom_exercises_v10',[]);
 if(!Array.isArray(customExercises))customExercises=[];
 let registerAxisId='e1';
@@ -1617,8 +1658,8 @@ function progressOpenSection(axisId,areaId,sectionId){progressView={level:'secti
 function progressOpenLesson(axisId,areaId,sectionId,lessonId){progressView={level:'lesson',axisId,areaId,sectionId,lessonId};renderProgress()}
 
 function renderMore(){
-  document.getElementById('moreScreen').innerHTML=`<div class="more-grid"><div class="eyebrow" style="margin:2px 2px 3px">Versão 10 · Eixo 2 + exercícios vinculados</div>
-    <button class="menu-btn" onclick="openGoalsManager()"><strong>Metas dos exercícios</strong><span>Editar metas de BPM dos exercícios dos Eixos 1 e 2.</span></button>
+  document.getElementById('moreScreen').innerHTML=`<div class="more-grid"><div class="eyebrow" style="margin:2px 2px 3px">Versão 11 · Eixos 1–4 estruturados</div>
+    <button class="menu-btn" onclick="openGoalsManager()"><strong>Metas dos exercícios</strong><span>Editar metas de BPM dos exercícios dos Eixos 1 a 4.</span></button>
     <button class="menu-btn" onclick="openAppearance()"><strong>Aparência</strong><span>Alternar entre verde escuro, preto, azul e amarelo.</span></button>
     <button class="menu-btn" onclick="exportJSON()"><strong>Exportar backup</strong><span>Baixar registros, exercícios criados, metas e aparência em JSON.</span></button>
     <button class="menu-btn" onclick="document.getElementById('importFile').click()"><strong>Importar backup</strong><span>Mesclar registros e exercícios personalizados.</span></button>
@@ -1631,7 +1672,7 @@ function openGoalsManager(){
 }
 function exportJSON(){
   const data={app:'baixo-plano-mestre',version:APP_VERSION,exportadoEm:new Date().toISOString(),records,goalOverrides,customExercises,appearance:{theme:currentTheme}};
-  downloadBlob(new Blob([JSON.stringify(data,null,2)],{type:'application/json'}),'contrabaixo-backup-v10.json');showToast('Backup exportado.');
+  downloadBlob(new Blob([JSON.stringify(data,null,2)],{type:'application/json'}),'contrabaixo-backup-v11.json');showToast('Backup exportado.');
 }
 function exportCSV(){
   let csv='Data;Hora;Eixo;Tipo;Conteudos;Exercicios;Status;BPM_por_exercicio;DuracaoMin;Notas\n';
@@ -1648,7 +1689,7 @@ function exportCSV(){
     const bpms=items.map(i=>`${findExercise(i.exerciseId)?.exercise.name||i.exerciseId}: ${i.bpm} BPM`).join(' | ');
     csv+=[r.date,r.startTime,axisId?`Eixo ${axisUi(axisId).number}`:'','practice',csvEscape(paths),csvEscape(ex),'',csvEscape(bpms),r.duration,csvEscape(r.notes)].join(';')+'\n';
   });
-  downloadBlob(new Blob(['\ufeff'+csv],{type:'text/csv;charset=utf-8'}),'contrabaixo-registros-v10.csv');showToast('Planilha exportada.');
+  downloadBlob(new Blob(['\ufeff'+csv],{type:'text/csv;charset=utf-8'}),'contrabaixo-registros-v11.csv');showToast('Planilha exportada.');
 }
 function handleImport(event){
   const file=event.target.files?.[0];event.target.value='';if(!file)return;
@@ -1681,7 +1722,7 @@ migrateOldData();
 normalizeRecordsV10();
 applyTheme(currentTheme);
 showHome();
-if('serviceWorker' in navigator){window.addEventListener('load',()=>navigator.serviceWorker.register('./sw.js?v=10').catch(()=>{}))}
+if('serviceWorker' in navigator){window.addEventListener('load',()=>navigator.serviceWorker.register('./sw.js?v=11').catch(()=>{}))}
 </script>
 
 </body>
